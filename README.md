@@ -1,3 +1,4 @@
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -46,8 +47,6 @@ Für die akribische Rekonstruierung eines Arcade-Games in seiner Gestalt und in 
 [sqlite]: https://img.shields.io/badge/sqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white
 [nodemon]: https://img.shields.io/badge/nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white
 [postman]: https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white
-
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 
 ## Getting Started
 Die Einrichtung des Projekts lokal auf einer Maschine ist dank Node.js einfach. 
