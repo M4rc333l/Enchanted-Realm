@@ -1,0 +1,49 @@
+body, html {
+    height: 100%;
+    margin: 0px;
+}
+
+body {
+    image-rendering: pixelated;
+    background-size: calc(100vw + 100px);
+    animation: wave-animation 20s infinite ease-in-out;
+
+}
+
+#fullscreen-icon {
+    position: absolute;
+    width: 5vw;
+    top: 20px;
+    right: 20px;
+}
+
+#phaser-game {
+    animation: blend-in 0.5s ease-out;
+}
+
+#border {
+    image-rendering: pixelated;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    object-fit:contain;
+}
+
+@keyframes wave-animation {
+    0%, 100% {
+      background-position-y: 0px;
+    }
+    50% {
+        background-position-y: -50px;
+    }
+  }
+
+  @keyframes blend-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+  }
