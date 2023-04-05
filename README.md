@@ -1,3 +1,8 @@
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+
 # EnchantedRealm
 
 Enchanted Realm ist ein Side-Scrolling-Shooter Videospiel, in dem die Spieler den höchsten Highscore knacken und die schwersten Errungenschaften sammeln. Der Spieler übernimmt die Kontrolle über ein kleines Raumschiff namens Zuza – Rara, das in einer Fantasy Welt fliegt, um Feinde zu bekämpfen und Bosse zu besiegen. Wenn der Spieler 
@@ -42,6 +47,8 @@ Für die akribische Rekonstruierung eines Arcade-Games in seiner Gestalt und in 
 [nodemon]: https://img.shields.io/badge/nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white
 [postman]: https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white
 
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+
 ## Getting Started
 Die Einrichtung des Projekts lokal auf einer Maschine ist dank Node.js einfach. 
 _Diese Seite zeigt nur eine Hälfte des Projekts. Für das Backend siehe https://github.com/NoahWasAVampire/Enchanted-Realm-Backend_
@@ -58,3 +65,12 @@ _Diese Seite zeigt nur eine Hälfte des Projekts. Für das Backend siehe https:/
    ```sh
    npm run start
    ```
+
+[contributors-shield]: https://img.shields.io/github/contributors/M4rc333l/Enchanted-Realm.svg?style=for-the-badge
+[contributors-url]: https://github.com/M4rc333l/Enchanted-Realm/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/M4rc333l/Enchanted-Realm.svg?style=for-the-badge
+[forks-url]: https://github.com/M4rc333l/Enchanted-Realm/network/members
+[stars-shield]: https://img.shields.io/github/stars/M4rc333l/Enchanted-Realm.svg?style=for-the-badge
+[stars-url]: https://github.com/M4rc333l/Enchanted-Realm/stargazers
+[issues-shield]: https://img.shields.io/github/issues/M4rc333l/Enchanted-Realm.svg?style=for-the-badge
+[issues-url]: https://github.com/M4rc333l/Enchanted-Realm/issues
