@@ -4,7 +4,7 @@ import './fullscreen.js';
 import MainScene from './scenes/hellscape.js'
 
 var config = {
-    type: Phaser.AUTO,
+    type: Phaser.CANVAS,
     pixelArt: true,
     scale: {
         parent: 'phaser-game',
