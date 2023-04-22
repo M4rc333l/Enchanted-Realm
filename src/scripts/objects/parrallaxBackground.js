@@ -23,7 +23,6 @@ export default class ParrallaxBackground extends Base {
 
     preload()
     {
-
         let basePath = `../../assets/stages/${this.name}/`;
 
         for (const name of this.imageNames) {

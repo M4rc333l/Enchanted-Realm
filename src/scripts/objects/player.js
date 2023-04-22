@@ -1,16 +1,17 @@
-export default class MainScene extends Base{
-    constructor(){
-        super("MainScene");
+import 'phaser';
+
+export default class Player extends Phaser.GameObjects.Sprite {
+    constructor(width, height, name){
+        super(width, height, name);
     }
 
     preload() {
-        console.log("preload");
+        this.context.load.image('player', '../../assets/objects/player.png');
     }
 
     create(){
-        console.log("create");
+        this.context.add.existing(this);
         this.createPlayer();
-
     }
 
     update(){
