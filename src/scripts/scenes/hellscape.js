@@ -5,7 +5,7 @@ export default class Hellscape extends Phaser.Scene {
 
     constructor() {
         super({ key: 'Hellscape' })
-        this.bg = new ParrallaxBackground(this, 'hellscape', 5);
+        this.bg = new ParrallaxBackground(this, 'factory', 5,352);
         //this.bg.setScales([0.1, 0.12, 0.4, 0.9, 1]);
         this.dynamicObjects = [];
         
