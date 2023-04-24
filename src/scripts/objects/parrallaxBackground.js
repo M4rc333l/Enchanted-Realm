@@ -3,10 +3,11 @@ import Base from './base';
 'use strict';
 
 export default class ParrallaxBackground extends Base {
-    constructor(context, name, count) {
+    constructor(context, name, count, bgWidth=320) {
         super(context);
         this.name = name;
         this.count = count;
+        this.bgWidth = bgWidth;
         this.imageNames = [];
 
         for (let i = 0; i < this.count; i++) {
@@ -33,8 +34,9 @@ export default class ParrallaxBackground extends Base {
         this.backgrounds = [];
 
         for (const name of this.imageNames) {
-            let part = this.context.add.tileSprite(0, 0, 3200, 244, name);
+            let part = this.context.add.tileSprite(0, 0, this.bgWidth*4, 224, name);
             part.setOrigin(0, 0);
+            
             this.backgrounds.push(part);
         }
 
@@ -42,7 +44,7 @@ export default class ParrallaxBackground extends Base {
         this.position = 1200;
         this.depth = 1;
     }
-    update() {
+    update(position) {
         var cursorKeys = this.context.input.keyboard.createCursorKeys();
 
         if (cursorKeys.right.isDown) {
@@ -55,7 +57,7 @@ export default class ParrallaxBackground extends Base {
         this.position += (this._position - this.position) * 0.15;
 
         for (let i = 0; i < this.imageNames.length; i++) {
-            this.backgrounds[i].x = -this.scales[i] * this.position * this.depth;
+            this.backgrounds[i].x = (Math.floor(position / this.bgWidth) * this.bgWidth + (-this.scales[i] * position * this.depth) % this.bgWidth) - this.bgWidth;
         }
     }
 }
