@@ -10,7 +10,10 @@ export default class Hellscape extends Phaser.Scene {
         this.dynamicObjects = [];
         
     }
-
+    init ()
+    {
+        this.scene.launch('Gui');
+    }
     preload() {
         this.bg.preload();
         this.load.image('player', '../../assets/objects/player.png');

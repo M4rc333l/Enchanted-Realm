@@ -1,7 +1,9 @@
 import 'phaser';
 import './background.js';
 import './fullscreen.js';
+import Menu from './scenes/menu.js'
 import MainScene from './scenes/hellscape.js'
+import Gui from './scenes/gui.js'
 
 var config = {
     type: Phaser.CANVAS,
@@ -12,9 +14,14 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 320,
         height: 224
-    },physics: {
-      default: "arcade"},
-    scene: [MainScene]
+    },
+    physics: {
+        default: "arcade"},
+    scene: [
+        Menu,
+        MainScene,
+        Gui
+    ]
 };
 
 function preload ()
