@@ -13,6 +13,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.playerVelocity = new Phaser.Math.Vector2();
         this.depth = 1;
         this.life = 3;
+        this._x = config.x;
+        this._y = config.y;
         this.create();
     }
 
@@ -43,11 +45,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
             _playerVelocity.y += this.yspeed;
         }
 
-        this.playerVelocity.x += (_playerVelocity.x - this.playerVelocity.x) * 0.2;
-        this.playerVelocity.y += (_playerVelocity.y - this.playerVelocity.y) * 0.2;
+        this._x += _playerVelocity.x;
+        this._y += _playerVelocity.y;
 
-        this.x += this.playerVelocity.x;
-        this.y += this.playerVelocity.y;
+        this.x += (this._x - this.x) * 0.2;
+        this.y += (this._y - this.y) * 0.2;
+
 
         if(this.y < this.margin) {
             this.y = this.margin;
@@ -82,7 +85,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         bullet.x = this.x;
         bullet.y = this.y + horizontalOffset;
         bullet.velocity = this.flipX == true ? 5 : -5;
-        this.context.dynamicObjects.push(bullet);
+        this.context.bulletPool.push(bullet);
     }
     enemyCollision() {
         if(!this.delay){

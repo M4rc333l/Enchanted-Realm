@@ -12,9 +12,15 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     create(){
         this.context.add.existing(this);
         this.context.physics.add.existing(this);
+        this.body.setSize(10,1);
+        this.depth = -1
     }
 
     update(){
         this.x += this.velocity;
+    }
+
+    destroy() {
+        this.destroy(true);
     }
 }

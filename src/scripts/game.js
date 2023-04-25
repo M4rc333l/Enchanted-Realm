@@ -2,8 +2,9 @@ import 'phaser';
 import './background.js';
 import './fullscreen.js';
 import Menu from './scenes/menu.js'
-import MainScene from './scenes/hellscape.js'
+import Stage from './scenes/stage.js'
 import Gui from './scenes/gui.js'
+import ParrallaxBackground from './scenes/parrallaxBackground.js'
 
 var config = {
     type: Phaser.CANVAS,
@@ -16,11 +17,15 @@ var config = {
         height: 224
     },
     physics: {
-        default: "arcade"},
+        default: "arcade",
+        arcade: {
+          debug: false,
+        }
+      },
     scene: [
-        Menu,
-        MainScene,
-        Gui
+        Stage,
+        Gui,
+        ParrallaxBackground
     ]
 };
 
