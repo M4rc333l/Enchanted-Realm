@@ -23,12 +23,13 @@ export default class Gui extends Phaser.Scene {
 
         this.pointLabel = this.add.text(300, 20, this.points)
 
-        /*this.registry.events.on('remove_life', () => {
+        this.registry.events.on('loseLife', () => {
             this.life.getChildren()[this.life.getChildren().length - 1].destroy();
         });
-        this.registry.events.on('game_over', () => {
+        this.registry.events.on('gameOver', () => {
             this.registry.events.removeAllListeners();
             this.scene.start('Menu');
-        });*/
+            this.scene.moveUp('Menu');
+        });
     }
 }

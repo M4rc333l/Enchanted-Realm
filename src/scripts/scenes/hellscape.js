@@ -1,5 +1,6 @@
 import ParrallaxBackground from '../objects/parrallaxBackground';
 import Player from '../objects/player';
+import Enemy from "../objects/enemy";
 
 export default class Hellscape extends Phaser.Scene {
 
@@ -18,6 +19,7 @@ export default class Hellscape extends Phaser.Scene {
         this.bg.preload();
         this.load.image('player', '../../assets/objects/player.png');
         this.load.image('bullet_normal', '../../assets/objects/bullet_normal.png');
+        this.load.image('enemy', '../../assets/objects/enemy.png');
         //this.load.glsl("lighting", "../../scripts/shader/wave.glsl"); 
     }
 
@@ -30,6 +32,14 @@ export default class Hellscape extends Phaser.Scene {
         this.player = new Player({scene:this, x:200, y:200, name:'player'});
         this.cameras.main.startFollow(this.player,false,1,0,0,88)
         //this.cameras.main.deadzone = new Phaser.Geom.Rectangle(100,100,50,50);
+
+
+        this.enemys = new Enemy({scene:this, x:250, y: 50, name: 'enemy'});
+        this.physics.add.collider(this.player, this.enemys);
+        this.physics.add.overlap(this.player, this.enemys, () => {
+            this.player.enemyCollision();
+        });
+
     }
 
     update() {

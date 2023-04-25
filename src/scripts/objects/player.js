@@ -12,6 +12,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.shootTick = 0;
         this.playerVelocity = new Phaser.Math.Vector2();
         this.depth = 1;
+        this.life = 3;
         this.create();
     }
 
@@ -82,5 +83,21 @@ export default class Player extends Phaser.GameObjects.Sprite {
         bullet.y = this.y + horizontalOffset;
         bullet.velocity = this.flipX == true ? 5 : -5;
         this.context.dynamicObjects.push(bullet);
+    }
+    enemyCollision() {
+        if(!this.delay){
+            this.delay = true;
+            this.life--;
+            this.scene.registry.events.emit('loseLife');
+            if(this.life === 0) {
+                this.scene.registry.events.emit('gameOver');
+            }
+            this.scene.time.addEvent({
+                delay: 800,
+                callback: () => {
+                    this.delay = false;
+                }
+            });
+        }
     }
 }
