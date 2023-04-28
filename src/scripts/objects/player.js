@@ -95,12 +95,26 @@ export default class Player extends Phaser.GameObjects.Sprite {
             if(this.life === 0) {
                 this.scene.registry.events.emit('gameOver');
             }
+            this.playerBlinking(10);
+        }
+    }
+    playerBlinking(i){
+        if(i>0){
             this.scene.time.addEvent({
-                delay: 800,
+                delay: 200,
                 callback: () => {
-                    this.delay = false;
+                    if(i%2===0){
+                        this.setBlendMode(Phaser.BlendModes.DARKEN);
+                    }
+                    else {
+                        this.setBlendMode(Phaser.BlendModes.NORMAL);
+                    }
+                    this.playerBlinking(i-1);
                 }
             });
+        }
+        else{
+            this.delay = false;
         }
     }
 }

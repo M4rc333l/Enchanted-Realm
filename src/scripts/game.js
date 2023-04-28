@@ -5,6 +5,7 @@ import Menu from './scenes/menu.js'
 import Stage from './scenes/stage.js'
 import Gui from './scenes/gui.js'
 import ParrallaxBackground from './scenes/parrallaxBackground.js'
+import End from './scenes/end.js'
 
 var config = {
     type: Phaser.CANVAS,
@@ -23,9 +24,11 @@ var config = {
         }
       },
     scene: [
+        Menu,
         Stage,
         Gui,
-        ParrallaxBackground
+        ParrallaxBackground,
+        End
     ]
 };
 

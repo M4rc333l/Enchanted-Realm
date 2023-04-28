@@ -1,32 +1,31 @@
 import ParrallaxBackground from "./parrallaxBackground";
 
-export default class Menu extends Phaser.Scene {
+export default class end extends Phaser.Scene {
     constructor() {
-        super({key: 'Menu'});
+        super({key: 'End'});
     }
     init() {
         this.scene.launch('Background',{config: {name: 'factory', count:5, bgWidth:352}});
         this.scene.bringToTop();
     }
     preload(){
-        this.load.image('startLogo', '../../assets/objects/startLogo.png');
+        this.load.image('endLogo', '../../assets/objects/gameOver.png');
     }
     create() {
         this.logoMenu = this.add.image(this.scale.width/2,
             this.scale.height/2,
-            'startLogo'
+            'endLogo'
         ).setScale(2).setInteractive();
 
         this.logoMenu.on(Phaser.Input.Events.POINTER_DOWN, () => {
-           this.add.tween({
-              targets: this.logoMenu,
-               y: -200,
-              onComplete: () => {
-                  this.scene.start('Stage')
-              }
-           });
+            this.add.tween({
+                targets: this.logoMenu,
+                y: -200,
+                onComplete: () => {
+                    this.scene.start('Menu')
+                }
+            });
         });
-
         this.ticker = 0;
     }
     update() {

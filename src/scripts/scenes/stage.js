@@ -35,6 +35,10 @@ export default class Stage extends Phaser.Scene {
         this.addPushListener(this.enemyPool, this.onEnemyCreated);
 
         this.enemySpawnTick = 0;
+
+        this.physics.add.overlap(this.player, this.enemyPool, () => {
+            this.player.enemyCollision();
+        })
     }
 
     spawn() {
