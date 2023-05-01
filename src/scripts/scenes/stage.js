@@ -76,7 +76,6 @@ export default class Stage extends Phaser.Scene {
     onBulletCreated(context, bullet) {
         context.physics.add.overlap(bullet, context.enemyPool, (bullet, enemy) => {
             console.log(bullet);
-           //bullet.destory();
            Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
            enemy.takeDamage(30);
         });

@@ -20,7 +20,5 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         this.x += this.velocity;
     }
 
-    destroy() {
-        this.destroy(true);
-    }
+    destroy() {}
 }
