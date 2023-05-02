@@ -32,7 +32,7 @@ export default class Gui extends Phaser.Scene {
         });
         this.registry.events.on('gameOver', () => {
             this.registry.events.removeAllListeners();
-            this.scene.stop('Stage');
+            this.scene.pause('Stage');
             this.scene.start('End');
         });
     }

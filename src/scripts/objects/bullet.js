@@ -5,7 +5,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     constructor(config) {
         super(config.scene, config.x, config.y, 'bullet_normal');
         this.context = config.scene;
-        this.velocity = 5;
+        this.velocity = 0.31;
         this.create();
     }
 
@@ -16,8 +16,8 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         this.depth = -1
     }
 
-    update(){
-        this.x += this.velocity;
+    update(time, delta){
+        this.x += this.velocity * delta;
     }
 
     destroy() {}

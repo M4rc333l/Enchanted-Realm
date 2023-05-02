@@ -23,7 +23,6 @@ export default class FireEnemy extends Enemy {
 
         //TODO: Error wenn weg
         let moveDir = direction.clone().normalize();
-        console.log(moveDir);
         
         //TODO: Wenn weg, dann keine Bewegung, nur oben und unten -> für links und rechts
         if(Math.abs(direction.x) > 50  || Math.abs(direction.y) > 50) {
