@@ -12,7 +12,7 @@ export default class Stage extends Phaser.Scene {
     {
         if(Object.keys(data).length === 0) {
             data = {};
-            data.stageConfig = {name: 'hellscape', count:5, bgWidth: 320};
+            data.stageConfig = {name: 'marioland', count:6, bgWidth: 320};
         }
 
         this.scene.launch('Gui');

@@ -15,7 +15,7 @@ export default class FireEnemy extends Enemy {
         //TODO: keine Ahnung, keine eindeutige Veränderung wenn weg
         this.tick+= 0.01 + Math.random() * 0.03;
 
-        //TODO: spiegeln
+        //TODO: Gegner spiegeln
         this.flipX = this.x < this.player.x;
 
         //TODO: Error wenn weg
