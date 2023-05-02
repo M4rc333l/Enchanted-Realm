@@ -49,14 +49,15 @@ export default class Stage extends Phaser.Scene {
         this.enemyPool.push(en);
     }
 
-    update() {
+    update(time, delta) {
         this.bg.updatePosition(this.cameras.main.scrollX);
-        this.player.update();
+        this.player.update(time, delta);
+        
         for(const obj of this.bulletPool) {
-            obj.update();
+            obj.update(time, delta);
         }        
         for(const obj of this.enemyPool) {
-            obj.update();
+            obj.update(time, delta);
         }
 
         this.enemySpawnTick--;

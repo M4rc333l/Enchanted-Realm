@@ -5,8 +5,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
     constructor(config) {
         super(config.scene, config.x, config.y, 'player');
         this.context = config.scene;
-        this.xspeed = 1.5;
-        this.yspeed = 1;
+        this.xspeed = 0.25;
+        this.yspeed = 0.15;
         this.margin = 8;
         this.shootMaxTick = 40;
         this.shootTick = 0;
@@ -30,19 +30,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
         })
     }
 
-    update(){
+    update(time, delta){
         let _playerVelocity = new Phaser.Math.Vector2();
         if(this.inputKeys.left.isDown){
-            _playerVelocity.x -= this.xspeed;
+            _playerVelocity.x -= this.xspeed * delta;
         } 
         if (this.inputKeys.right.isDown){
-            _playerVelocity.x += this.xspeed;
+            _playerVelocity.x += this.xspeed * delta;
         }
         if(this.inputKeys.up.isDown){
-            _playerVelocity.y -= this.yspeed;
+            _playerVelocity.y -= this.yspeed * delta;
         } 
         if (this.inputKeys.down.isDown){
-            _playerVelocity.y += this.yspeed;
+            _playerVelocity.y += this.yspeed * delta;
         }
 
         this._x += _playerVelocity.x;
@@ -84,7 +84,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         let bullet = new Bullet({scene:this.context, x:8, y:3, name:'bullet_normal'});
         bullet.x = this.x;
         bullet.y = this.y + horizontalOffset;
-        bullet.velocity = this.flipX == true ? 5 : -5;
+        bullet.velocity = this.flipX == true ? 0.75 : -0.75;
         this.context.bulletPool.push(bullet);
     }
     enemyCollision() {

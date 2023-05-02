@@ -20,7 +20,6 @@ export default class FireEnemy extends Enemy {
 
 
         let moveDir = direction.clone().normalize();
-        console.log(moveDir);
         
 
         if(Math.abs(direction.x) > 50  || Math.abs(direction.y) > 50) {

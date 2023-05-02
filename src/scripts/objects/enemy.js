@@ -17,7 +17,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.context.add.existing(this);
         this.context.physics.add.existing(this);
     }
-    update() {
+    update(time, delta) {
         let move = true;
 
         this.fellowForce = new Phaser.Math.Vector2(0,0);
