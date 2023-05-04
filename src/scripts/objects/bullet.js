@@ -19,6 +19,4 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     update(time, delta){
         this.x += this.velocity * delta;
     }
-
-    destroy() {}
 }

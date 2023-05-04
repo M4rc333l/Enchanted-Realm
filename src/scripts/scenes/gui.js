@@ -21,11 +21,22 @@ export default class Gui extends Phaser.Scene {
             }
         })
 
-        this.pointLabel = this.add.text(300, 20, this.points)
+        this.pointLabel = this.add.text(300, 10, this.points);
 
-        this.registry.events.on('getPoints', () => {
+        this.itemLabel = this.add.text(120, 10, "Item: ");
+
+        this.registry.events.on('enemyDestroyed', () => {
             this.points+=10;
             this.pointLabel.setText(this.points);
+        });
+        this.registry.events.on('activateSpeedItem', () => {
+            this.itemLabel.setText(this.itemLabel.text+"Speed");
+            this.time.addEvent({
+                delay: 5000,
+                callback: () => {
+                    this.itemLabel.setText("Item: ");
+                }
+            });
         });
         this.registry.events.on('loseLife', () => {
             this.life.getChildren()[this.life.getChildren().length - 1].destroy();

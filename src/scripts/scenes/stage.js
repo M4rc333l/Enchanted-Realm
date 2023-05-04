@@ -3,6 +3,7 @@ import ParrallaxBackground from './parrallaxBackground';
 import Player from '../objects/player';
 import Enemy from "../objects/enemy";
 import FireEnemy from '../objects/enemies/fireenemy';
+import SpeedItem from "../objects/items/speedItem";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -23,6 +24,7 @@ export default class Stage extends Phaser.Scene {
         this.load.image('player', '../../assets/objects/player.png');
         this.load.image('bullet_normal', '../../assets/objects/bullet_normal.png');
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
+        this.load.image('item', '../../assets/objects/life.png');
     }
 
     create() {
@@ -39,9 +41,54 @@ export default class Stage extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.enemyPool, () => {
             this.player.enemyCollision();
         })
+
+        this.itemPool = [];
+        this.itemDelay = false;
+        this.physics.add.overlap(this.player, this.itemPool, () => {
+            this.itemPool[0].collected();
+        })
+        this.registry.events.on('enemyDestroyed', () => {
+            if(!this.itemDelay && Math.random() < 1) {
+                this.itemSpawn();
+            }
+        });
+
+        //this.border = this.physics.add.sprite(0, 224, 'item').setScale(10000, 1/18);
+        //this.physics.add.collider(this.itemPool, this.border);
+    }
+    itemSpawn(){
+        //this.itemDelay = true;
+        if(this.itemPool.length>0){
+            this.itemPool[0].destroy();
+            this.itemPool.pop();
+        }
+        let randomItem = Math.random();
+        let sItem = null;
+        if(0 <= randomItem > 0.25){
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+        }
+        else if(0.25 < randomItem > 0.5){
+            //anderes Item
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+        }
+        else if(0.5 < randomItem > 0.75){
+            //anderes Item
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+        }
+        else if(0.75 < randomItem >= 1){
+            //anderes Item
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+        }
+        this.itemPool.push(sItem);
+        this.time.addEvent({
+            delay: 10000,
+            callback: () => {
+                this.itemDelay = false;
+            }
+        });
     }
 
-    spawn() {
+    enemySpawn() {
         let __x = this.player.x - 320/2 + Math.random()*1000
         let __y =  Math.random()*224;
         let en = new FireEnemy({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player);
@@ -59,10 +106,13 @@ export default class Stage extends Phaser.Scene {
         for(const obj of this.enemyPool) {
             obj.update(time, delta);
         }
+        if(this.itemPool.length>0){
+            this.itemPool[0].update();
+        }
 
         this.enemySpawnTick--;
         if(this.enemySpawnTick < 0) {
-            this.spawn();
+            this.enemySpawn();
             this.enemySpawnTick = 500;
         }
     }
