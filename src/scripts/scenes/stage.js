@@ -28,6 +28,10 @@ export default class Stage extends Phaser.Scene {
     }
 
     create() {
+
+        this.physics.world.checkCollision.left = false;
+        this.physics.world.checkCollision.right = false;
+
         this.player = new Player({scene:this, x:200, y:200, name:'player'});
         this.cameras.main.startFollow(this.player,false,1,0,0,88)
 
@@ -48,16 +52,14 @@ export default class Stage extends Phaser.Scene {
             this.itemPool[0].collected();
         })
         this.registry.events.on('enemyDestroyed', () => {
-            if(!this.itemDelay && Math.random() < 1) {
+            //WK für das Spawnen eines Items
+            if(!this.itemDelay && Math.random() < 0.5) {
                 this.itemSpawn();
             }
         });
-
-        //this.border = this.physics.add.sprite(0, 224, 'item').setScale(10000, 1/18);
-        //this.physics.add.collider(this.itemPool, this.border);
     }
     itemSpawn(){
-        //this.itemDelay = true;
+        this.itemDelay = true;
         if(this.itemPool.length>0){
             this.itemPool[0].destroy();
             this.itemPool.pop();
@@ -105,9 +107,6 @@ export default class Stage extends Phaser.Scene {
         }        
         for(const obj of this.enemyPool) {
             obj.update(time, delta);
-        }
-        if(this.itemPool.length>0){
-            this.itemPool[0].update();
         }
 
         this.enemySpawnTick--;
