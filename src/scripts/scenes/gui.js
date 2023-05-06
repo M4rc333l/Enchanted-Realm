@@ -21,7 +21,7 @@ export default class Gui extends Phaser.Scene {
             }
         })
 
-        this.pointLabel = this.add.text(300, 10, this.points);
+        this.pointLabel = this.add.text(280, 10, this.points);
 
         this.itemLabel = this.add.text(120, 10, "Item: ");
 
