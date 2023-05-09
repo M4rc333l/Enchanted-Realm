@@ -4,6 +4,7 @@ import Player from '../objects/player';
 import Enemy from "../objects/enemy";
 import FireEnemy from '../objects/enemies/fireenemy';
 import SpeedItem from "../objects/items/speedItem";
+import LaserGun from "../objects/items/laserGun";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -67,19 +68,19 @@ export default class Stage extends Phaser.Scene {
         let randomItem = Math.random();
         let sItem = null;
         if(0 <= randomItem > 0.25){
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
         }
         else if(0.25 < randomItem > 0.5){
             //anderes Item
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
         }
         else if(0.5 < randomItem > 0.75){
             //anderes Item
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
         }
         else if(0.75 < randomItem >= 1){
             //anderes Item
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
         }
         this.itemPool.push(sItem);
         this.time.addEvent({
@@ -104,7 +105,7 @@ export default class Stage extends Phaser.Scene {
         
         for(const obj of this.bulletPool) {
             obj.update(time, delta);
-        }        
+        }
         for(const obj of this.enemyPool) {
             obj.update(time, delta);
         }
@@ -128,6 +129,12 @@ export default class Stage extends Phaser.Scene {
             console.log(bullet);
            Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
            enemy.takeDamage(30);
+        });
+        context.time.addEvent({
+            delay: 5000,
+            callback: () => {
+                Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
+            }
         });
     }
 
