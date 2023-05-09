@@ -11,7 +11,7 @@ export default class FireEnemy extends Enemy {
         this.player = player;
         this.cooldown = 1;
     }
-    moveAlgorithm() {
+    moveAlgorithm(time, delta) {
         this.tick+= 0.01 + Math.random() * 0.03;
 
         this.flipX = this.x < this.player.x;
@@ -24,8 +24,8 @@ export default class FireEnemy extends Enemy {
 
         if(Math.abs(direction.x) > 50  || Math.abs(direction.y) > 50) {
             if(this.fellowForce.x == 0 && this.fellowForce.y == 0) {
-                    this._x -= moveDir.x * 0.5 * this.cooldown;
-                    this._y -= moveDir.y * 0.5 * this.cooldown;
+                    this._x -= moveDir.x * delta * 0.075 * this.cooldown;
+                    this._y -= moveDir.y * delta * 0.075 * this.cooldown;
             } else {
                 this._x += this.fellowForce.x / 20;
                 this._y += this.fellowForce.y / 20;

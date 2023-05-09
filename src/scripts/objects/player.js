@@ -68,7 +68,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
 
         if (this.inputKeys.shoot.isDown){
-            this.shootTick--;
+            this.shootTick-= delta * 0.15;
             if(this.shootTick < 0) {
                 this.shoot(-2);
                 this.shoot(4);
