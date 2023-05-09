@@ -11,7 +11,7 @@ export default class FireEnemy extends Enemy {
         this.player = player;
         this.cooldown = 1;
     }
-    moveAlgorithm() {
+    //moveAlgorithm() {
         //TODO: keine Ahnung, keine eindeutige Veränderung wenn weg
     moveAlgorithm(time, delta) {
         this.tick+= 0.01 + Math.random() * 0.03;
