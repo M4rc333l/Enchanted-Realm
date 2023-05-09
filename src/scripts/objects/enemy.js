@@ -20,6 +20,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     update() {
         this.moveAlgorithm();
     }
+
     moveAlgorithm() {
 
     }

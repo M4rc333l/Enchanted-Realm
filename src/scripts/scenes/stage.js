@@ -91,7 +91,7 @@ export default class Stage extends Phaser.Scene {
         });
     }
 
-    enemySpawn() {
+    enemySpawn(){
         //Random-Zahl generieren, um random zu bestimmen, ob Gegner recht oder links von einem spawnen
         let randomNum = Phaser.Math.Between(0, 1);
         let spawnpoint = 0;
