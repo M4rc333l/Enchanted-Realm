@@ -101,7 +101,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     playerBlinking(i){
         if(i>0){
             this.scene.time.addEvent({
-                delay: 200,
+                delay: 400,
                 callback: () => {
                     if(i%2===0){
                         this.setBlendMode(Phaser.BlendModes.DARKEN);

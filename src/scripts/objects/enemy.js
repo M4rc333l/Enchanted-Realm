@@ -47,7 +47,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     takeDamage(damage) {
         this.health -= damage;
         if(this.health <= 0) {
-            this.scene.registry.events.emit('getPoints');
+            this.scene.registry.events.emit('enemyDestroyed');
             this.destroy();
         }
     }
