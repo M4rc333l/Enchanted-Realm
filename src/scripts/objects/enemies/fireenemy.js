@@ -13,6 +13,7 @@ export default class FireEnemy extends Enemy {
     }
     moveAlgorithm() {
         //TODO: keine Ahnung, keine eindeutige Veränderung wenn weg
+    moveAlgorithm(time, delta) {
         this.tick+= 0.01 + Math.random() * 0.03;
 
         //TODO: Gegner spiegeln
@@ -27,8 +28,8 @@ export default class FireEnemy extends Enemy {
         //TODO: Wenn weg, dann keine Bewegung, nur oben und unten -> für links und rechts
         if(Math.abs(direction.x) > 50  || Math.abs(direction.y) > 50) {
             if(this.fellowForce.x == 0 && this.fellowForce.y == 0) {
-                    this._x -= moveDir.x * 0.5 * this.cooldown;
-                    this._y -= moveDir.y * 0.5 * this.cooldown;
+                    this._x -= moveDir.x * delta * 0.075 * this.cooldown;
+                    this._y -= moveDir.y * delta * 0.075 * this.cooldown;
             } else {
                 this._x += this.fellowForce.x / 20;
                 this._y += this.fellowForce.y / 20;
