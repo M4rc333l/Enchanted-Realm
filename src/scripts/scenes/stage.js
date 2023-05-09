@@ -91,9 +91,24 @@ export default class Stage extends Phaser.Scene {
     }
 
     enemySpawn() {
-        let __x = this.player.x - 320/2 + Math.random()*1000
-        let __y =  Math.random()*224;
-        let en = new FireEnemy({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player);
+        //Random-Zahl generieren, um random zu bestimmen, ob Gegner recht oder links von einem spawnen
+        let randomNum = Phaser.Math.Between(0, 1);
+        let spawnpoint = 0;
+        let spawnSite;
+
+        if(randomNum == 0){
+            spawnpoint = this.player.x - 200;
+            spawnSite = 0;
+        }
+        else{
+            spawnpoint = this.player.x + 200;
+            spawnSite = 1;
+        }
+
+        let __x = spawnpoint;
+        let __y = Phaser.Math.Between(0, 224); //224 ist die allgemeine Höhe
+
+        let en = new FireEnemy({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player, spawnSite);
         en.body.setSize(20,30);
         this.enemyPool.push(en);
     }

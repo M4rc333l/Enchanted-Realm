@@ -17,28 +17,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.context.add.existing(this);
         this.context.physics.add.existing(this);
     }
-    update(time, delta) {
-        let move = true;
-
-        this.fellowForce = new Phaser.Math.Vector2(0,0);
-        for(let fellow of this.fellows) {
-            if(fellow != this) {
-                let myPos = new Phaser.Math.Vector2(this.x, this.y);
-                let fellowPos = new Phaser.Math.Vector2(fellow.x, fellow.y);
-                let playerPos = new Phaser.Math.Vector2(this.player.x, fellow.y);
-
-                let distanceBetween = myPos.clone().distance(fellowPos);
-                let myDistanceToPlayer = myPos.clone().distance(playerPos);
-                let fellowDistanceToPlayer = fellowPos.clone().distance(playerPos);
-                
-                if(distanceBetween < 30 && myDistanceToPlayer > fellowDistanceToPlayer) {
-                    this.fellowForce.x += this.x - fellow.x;
-                    this.fellowForce.y += this.y - fellow.y;
-                    this.fellowForce.normalize();
-                } 
-            }
-        }
-
+    update() {
         this.moveAlgorithm();
     }
     moveAlgorithm() {
