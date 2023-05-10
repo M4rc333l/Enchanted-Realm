@@ -1,4 +1,4 @@
-import Enemy from '../enemy.js';
+import Enemy from '../../enemy.js';
 
 export default class FireEnemy extends Enemy {
     constructor(config, fellows, player, spawnSite) {
@@ -11,6 +11,7 @@ export default class FireEnemy extends Enemy {
         this.player = player;
         this.cooldown = 1;
         this.spawnSite = spawnSite;
+        this.counter = 0;
     }
 
     moveAlgorithm() {
@@ -25,16 +26,28 @@ export default class FireEnemy extends Enemy {
             this.cooldown += 0.02;
         }
 
+        var counter = this.counter;
+
         //TODO: Speed festlegen + Richtung
         if (this.spawnSite == 0){
             this._x += 3;
+            this.counter += 1;
         }
         else if(this.spawnSite == 1) {
             this._x -= 3;
+            this.counter += 1;
         }
 
+        //TODO: Löschen nach bestimmter Pixelanzahl.
+        this.removeEnemy(320);
 
         //TODO: Wenn weg, dann gar keine Bewegung mehr -> für Aktualisierug der Position
         this.setPosition(this._x, this._yo);
+    }
+
+    removeEnemy(pixel){
+        if(this.counter >= pixel) {
+            this.destroy();
+        }
     }
 }

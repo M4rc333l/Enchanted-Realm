@@ -2,9 +2,10 @@ import 'phaser';
 import ParrallaxBackground from './parrallaxBackground';
 import Player from '../objects/player';
 import Enemy from "../objects/enemy";
-import FireEnemy from '../objects/enemies/fireenemy';
+import FireEnemy from '../objects/enemies/hellscape/fireenemy';
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
+import Isaac from "../objects/enemies/hellscape/isaac";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -14,7 +15,7 @@ export default class Stage extends Phaser.Scene {
     {
         if(Object.keys(data).length === 0) {
             data = {};
-            data.stageConfig = {name: 'marioland', count:6, bgWidth: 320};
+            data.stageConfig = {name: 'hellscape', count:5, bgWidth: 320};
         }
 
         this.scene.launch('Gui');
@@ -25,6 +26,7 @@ export default class Stage extends Phaser.Scene {
         this.load.image('player', '../../assets/objects/player.png');
         this.load.image('bullet_normal', '../../assets/objects/bullet_normal.png');
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
+        this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_02.png');
         this.load.image('item', '../../assets/objects/life.png');
     }
 
@@ -92,9 +94,9 @@ export default class Stage extends Phaser.Scene {
     }
 
     enemySpawn(){
-        //Random-Zahl generieren, um random zu bestimmen, ob Gegner recht oder links von einem spawnen
+        //Random-Zahl generieren, um random zu bestimmen, ob Gegner rechts oder links von Hauptcharakter spawnen
         let randomNum = Phaser.Math.Between(0, 1);
-        let spawnpoint = 0;
+        let spawnpoint;
         let spawnSite;
 
         if(randomNum == 0){
@@ -107,11 +109,14 @@ export default class Stage extends Phaser.Scene {
         }
 
         let __x = spawnpoint;
-        let __y = Phaser.Math.Between(0, 224); //224 ist die allgemeine Höhe
+        let __y = Phaser.Math.Between(10, 210);
 
         let en = new FireEnemy({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player, spawnSite);
+        let isaac = new Isaac({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player, spawnSite, __y);
         en.body.setSize(20,30);
+        isaac.body.setSize(20,30);
         this.enemyPool.push(en);
+        this.enemyPool.push(isaac);
     }
 
     update(time, delta) {
