@@ -24,10 +24,10 @@ export default class Stage extends Phaser.Scene {
     }
     preload() {
         this.load.image('player', '../../assets/objects/player.png');
-        this.load.image('bullet_normal', '../../assets/objects/bullet_normal.png');
+        this.load.image('bullet_normal', '../../assets/objects/lasergun_bullet.png');
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_02.png');
-        this.load.image('item', '../../assets/objects/life.png');
+        this.load.image('item', '../../assets/objects/lasergun.png');
     }
 
     create() {
