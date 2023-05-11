@@ -1,6 +1,6 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(config, fellows, player) {
-        super(config.scene, config.x, config.y, 'enemy');
+    constructor(config, fellows, player, image) {
+        super(config.scene, config.x, config.y, image);
         this.context = config.scene;
         this.xspeed = 1.5;
         this.yspeed = 1;

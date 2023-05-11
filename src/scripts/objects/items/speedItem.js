@@ -1,8 +1,8 @@
 import Item from "../item";
 
 export default class SpeedItem extends Item {
-    constructor(config, player) {
-        super(config, player);
+    constructor(config, player, image) {
+        super(config, player, image);
         this.player = player;
     }
     collected(){

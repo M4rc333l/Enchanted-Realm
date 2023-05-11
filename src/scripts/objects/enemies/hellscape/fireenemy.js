@@ -1,8 +1,8 @@
 import Enemy from '../../enemy.js';
 
 export default class FireEnemy extends Enemy {
-    constructor(config, fellows, player, spawnSite) {
-        super(config, fellows, player);
+    constructor(config, fellows, player, spawnSite, image) {
+        super(config, fellows, player, image);
         this.tick = 0;
         this._x = config.x;
         this._y = config.y;

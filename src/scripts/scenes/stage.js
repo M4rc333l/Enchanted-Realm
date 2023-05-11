@@ -26,8 +26,9 @@ export default class Stage extends Phaser.Scene {
         this.load.image('player', '../../assets/objects/player.png');
         this.load.image('bullet_normal', '../../assets/objects/lasergun_bullet.png');
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
-        this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_02.png');
+        this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
         this.load.image('item', '../../assets/objects/lasergun.png');
+        this.load.image('life', '../../assets/objects/life.png');
     }
 
     create() {
@@ -56,7 +57,7 @@ export default class Stage extends Phaser.Scene {
         })
         this.registry.events.on('enemyDestroyed', () => {
             //WK für das Spawnen eines Items
-            if(!this.itemDelay && Math.random() < 0.5) {
+            if(!this.itemDelay && Math.random() < 1) {
                 this.itemSpawn();
             }
         });
@@ -69,20 +70,20 @@ export default class Stage extends Phaser.Scene {
         }
         let randomItem = Math.random();
         let sItem = null;
-        if(0 <= randomItem > 0.25){
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+        if(0 <= randomItem < 0.25){
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
         }
-        else if(0.25 < randomItem > 0.5){
+        else if(0.25 <= randomItem < 0.5){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
         }
-        else if(0.5 < randomItem > 0.75){
+        else if(0.5 <= randomItem < 0.75){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
-        else if(0.75 < randomItem >= 1){
+        else if(0.75 <= randomItem <= 1){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50, name: 'item'}, this.player);
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
         this.itemPool.push(sItem);
         this.time.addEvent({
@@ -111,8 +112,8 @@ export default class Stage extends Phaser.Scene {
         let __x = spawnpoint;
         let __y = Phaser.Math.Between(10, 210);
 
-        let en = new FireEnemy({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player, spawnSite);
-        let isaac = new Isaac({scene:this, x:__x, y:__y, name: 'enemy'}, this.enemyPool, this.player, spawnSite, __y);
+        let en = new FireEnemy({scene:this, x:__x, y:__y}, this.enemyPool, this.player, spawnSite, 'enemy');
+        let isaac = new Isaac({scene:this, x:__x, y:__y,}, this.enemyPool, this.player, spawnSite, __y, 'enemy2');
         en.body.setSize(20,30);
         isaac.body.setSize(20,30);
         this.enemyPool.push(en);

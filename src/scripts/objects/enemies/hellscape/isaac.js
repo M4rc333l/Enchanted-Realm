@@ -1,8 +1,8 @@
 import Enemy from '../../enemy.js';
 
 export default class Isaac extends Enemy {
-    constructor(config, fellows, player, spawnSite, spawnpointY) {
-        super(config, fellows, player);
+    constructor(config, fellows, player, spawnSite, spawnpointY, image) {
+        super(config, fellows, player, image);
         this.tick = 0;
         this._x = config.x;
         this._y = config.y;

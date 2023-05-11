@@ -1,6 +1,6 @@
 export default class Item extends Phaser.Physics.Arcade.Sprite {
-    constructor(config, player) {
-        super(config.scene, config.x, config.y, 'item');
+    constructor(config, player, image) {
+        super(config.scene, config.x, config.y, image);
         this.context = config.scene;
         this.player = player;
         this.create();
