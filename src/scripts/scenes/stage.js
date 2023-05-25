@@ -6,6 +6,7 @@ import FireEnemy from '../objects/enemies/hellscape/fireenemy';
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
 import Isaac from "../objects/enemies/hellscape/isaac";
+import ProtectionItem from "@/scripts/objects/items/protectionItem";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -71,19 +72,19 @@ export default class Stage extends Phaser.Scene {
         let randomItem = Math.random();
         let sItem = null;
         if(0 <= randomItem < 0.25){
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
+            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
         }
         else if(0.25 <= randomItem < 0.5){
             //anderes Item
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
+            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
         }
         else if(0.5 <= randomItem < 0.75){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
+            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
         else if(0.75 <= randomItem <= 1){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
+            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
         this.itemPool.push(sItem);
         this.time.addEvent({
