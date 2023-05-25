@@ -1,8 +1,8 @@
 <template>
     <div class="vh-100 d-flex justify-content-center align-items-center">
-                <div class="col-md-4 p-5 shadow-sm border rounded-5 border-primary bg-light">
+                <div class="col-md-4 p-5 shadow-sm border rounded-4 border-secondary bg-light-subtle">
                   <h2 class="text-center mb-4 text-primary">Enchanted Realm</h2>
-                  <h4 class="text-center mb-4 text-primary">Registrieren</h4>
+                  <h4 class="text-center mb-4">Registrieren</h4>
                     <form>
                         <div class="mb-3">
                             <label for="inputUsername" class="form-label">Benutzername</label>
@@ -28,5 +28,3 @@
                 </div>
             </div>
     </template>
-    
-    
