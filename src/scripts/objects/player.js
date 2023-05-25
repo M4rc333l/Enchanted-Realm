@@ -104,7 +104,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 delay: 400,
                 callback: () => {
                     if(i%2===0){
-                        this.setBlendMode(Phaser.BlendModes.DARKEN);
+                        this.setBlendMode(Phaser.BlendModes.LIGHTER);
                     }
                     else {
                         this.setBlendMode(Phaser.BlendModes.NORMAL);

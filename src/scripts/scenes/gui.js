@@ -38,6 +38,15 @@ export default class Gui extends Phaser.Scene {
                 }
             });
         });
+        this.registry.events.on('playerProtection', () => {
+            this.itemLabel.setText(this.itemLabel.text+"Immortal");
+            this.time.addEvent({
+                delay: 5000,
+                callback: () => {
+                    this.itemLabel.setText("Item: ");
+                }
+            });
+        });
         this.registry.events.on('activateLaserItem', () => {
             this.itemLabel.setText(this.itemLabel.text+"LaserGun");
             this.time.addEvent({
