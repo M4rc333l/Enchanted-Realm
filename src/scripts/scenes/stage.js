@@ -6,7 +6,7 @@ import FireEnemy from '../objects/enemies/hellscape/fireenemy';
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
 import Isaac from "../objects/enemies/hellscape/isaac";
-import ProtectionItem from "@/scripts/objects/items/protectionItem";
+import Glurak from "../objects/enemies/pokemon/glurak";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -16,7 +16,7 @@ export default class Stage extends Phaser.Scene {
     {
         if(Object.keys(data).length === 0) {
             data = {};
-            data.stageConfig = {name: 'marioland', count:5, bgWidth: 320};
+            data.stageConfig = {name: 'hellscape', count:5, bgWidth: 320};
         }
 
         this.scene.launch('Gui');
@@ -24,11 +24,21 @@ export default class Stage extends Phaser.Scene {
         this.bg = this.scene.get('Background');
     }
     preload() {
+        //TODO: Player
         this.load.image('player', '../../assets/objects/player.png');
+
+        //TODO: Waffen & Bullets
+        this.load.image('item', '../../assets/objects/lasergun.png');
         this.load.image('bullet_normal', '../../assets/objects/lasergun_bullet.png');
+
+        //TODO: Gegner
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
         this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
-        this.load.image('item', '../../assets/objects/lasergun.png');
+
+        //TODO: Bosse
+        this.load.image('boss', '../../assets/enemy/pokemon/glumanda.png');
+
+        //TODO: Objekte
         this.load.image('life', '../../assets/objects/life.png');
     }
 
@@ -46,6 +56,7 @@ export default class Stage extends Phaser.Scene {
         this.addPushListener(this.enemyPool, this.onEnemyCreated);
 
         this.enemySpawnTick = 0;
+        this.bossSpawnTick = false;// neu
 
         this.physics.add.overlap(this.player, this.enemyPool, () => {
             this.player.enemyCollision();
@@ -72,19 +83,19 @@ export default class Stage extends Phaser.Scene {
         let randomItem = Math.random();
         let sItem = null;
         if(0 <= randomItem < 0.25){
-            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
         }
         else if(0.25 <= randomItem < 0.5){
             //anderes Item
-            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
         }
         else if(0.5 <= randomItem < 0.75){
             //anderes Item
-            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
         else if(0.75 <= randomItem <= 1){
             //anderes Item
-            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
+            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
         this.itemPool.push(sItem);
         this.time.addEvent({
@@ -113,18 +124,35 @@ export default class Stage extends Phaser.Scene {
         let __x = spawnpoint;
         let __y = Phaser.Math.Between(10, 210);
 
-        let en = new FireEnemy({scene:this, x:__x, y:__y}, this.enemyPool, this.player, spawnSite, 'enemy');
-        let isaac = new Isaac({scene:this, x:__x, y:__y,}, this.enemyPool, this.player, spawnSite, __y, 'enemy2');
-        en.body.setSize(20,30);
-        isaac.body.setSize(20,30);
-        this.enemyPool.push(en);
-        this.enemyPool.push(isaac);
+        //todo mit time out sind die zeit versetzt
+        for (let i = 0; i < 5; i++) {
+            let en = new FireEnemy({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, spawnSite, 'enemy');
+            en.body.setSize(20, 30);
+            this.enemyPool.push(en);
+            setTimeout(() => {
+                let isaac = new Isaac({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, spawnSite, __y, 'enemy2');
+                isaac.body.setSize(20, 30);
+                this.enemyPool.push(isaac);
+            },  2000); // Zeitversatz von 500ms zwischen den Gegnern (anpassbar)
+        }
+
+    }
+
+    //todo neu
+    bossSpawn(){
+
+        let __x = 300;
+        let __y = 100;
+        let boss = new Glurak({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, 'boss');
+        boss.body.setSize(114, 80);
+        this.enemyPool.push(boss);
+
     }
 
     update(time, delta) {
         this.bg.updatePosition(this.cameras.main.scrollX);
         this.player.update(time, delta);
-        
+
         for(const obj of this.bulletPool) {
             obj.update(time, delta);
         }
@@ -132,10 +160,17 @@ export default class Stage extends Phaser.Scene {
             obj.update(time, delta);
         }
 
+        //todo neu
         this.enemySpawnTick--;
         if(this.enemySpawnTick < 0) {
             this.enemySpawn();
             this.enemySpawnTick = 500;
+            //this.enemySpawnTick = 500;
+        }
+
+        if (!this.bossSpawned) {
+            this.bossSpawn();
+            this.bossSpawned = true;
         }
     }
 
@@ -149,8 +184,8 @@ export default class Stage extends Phaser.Scene {
     onBulletCreated(context, bullet) {
         context.physics.add.overlap(bullet, context.enemyPool, (bullet, enemy) => {
             console.log(bullet);
-           Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
-           enemy.takeDamage(30);
+            Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
+            enemy.takeDamage(30);
         });
         context.time.addEvent({
             delay: 5000,
