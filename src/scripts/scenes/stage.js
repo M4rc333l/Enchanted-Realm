@@ -7,6 +7,7 @@ import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
 import Isaac from "../objects/enemies/hellscape/isaac";
 import Glurak from "../objects/enemies/pokemon/glurak";
+import Base from "../objects/base/base";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -40,6 +41,9 @@ export default class Stage extends Phaser.Scene {
 
         //TODO: Objekte
         this.load.image('life', '../../assets/objects/life.png');
+
+        //TODO basen
+        this.load.image('base1', '../../assets/basen/pokemon/testbase.png');
     }
 
     create() {
@@ -56,7 +60,6 @@ export default class Stage extends Phaser.Scene {
         this.addPushListener(this.enemyPool, this.onEnemyCreated);
 
         this.enemySpawnTick = 0;
-        this.bossSpawnTick = false;// neu
 
         this.physics.add.overlap(this.player, this.enemyPool, () => {
             this.player.enemyCollision();
@@ -67,6 +70,8 @@ export default class Stage extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.itemPool, () => {
             this.itemPool[0].collected();
         })
+
+
         this.registry.events.on('enemyDestroyed', () => {
             //WK für das Spawnen eines Items
             if(!this.itemDelay && Math.random() < 1) {
@@ -128,6 +133,7 @@ export default class Stage extends Phaser.Scene {
 
         for (let i = 0; i < 5; i++) {
             let randomTimer = Phaser.Math.Between(1000, 2000);
+
             //TODO: FireEnemy zeitversetzt spawnen
             setTimeout(() => {
                 let en = new FireEnemy({scene: this, x: __x, y: __y}, this.enemyPool, this.player, spawnSite, randomY, 'enemy');
@@ -145,16 +151,26 @@ export default class Stage extends Phaser.Scene {
         }
     }
 
-
-    //todo neu
     bossSpawn(){
-
         let __x = 300;
         let __y = 100;
         let boss = new Glurak({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, 'boss');
         boss.body.setSize(114, 80);
         this.enemyPool.push(boss);
+    }
 
+    baseSpawn(){
+        let __x = 30;
+        let __y = 10;
+
+            let randomY = Phaser.Math.Between(30, 190);
+
+            let base1 = new Base({scene: this, x: __x, y: __y}, this.enemyPool, this.player, 100, randomY, 'base1');
+            base1.body.setSize(14, 12);
+            this.enemyPool.push(base1);
+            let base2 = new Base({scene: this, x: __x, y: __y}, this.enemyPool, this.player, 300, randomY, 'base1');
+            base2.body.setSize(14, 12);
+            this.enemyPool.push(base2);
     }
 
     update(time, delta) {
@@ -168,7 +184,7 @@ export default class Stage extends Phaser.Scene {
             obj.update(time, delta);
         }
 
-        //todo neu
+        //TODO: wie viele enemys spawnen
         this.enemySpawnTick--;
         if(this.enemySpawnTick < 0) {
             this.enemySpawn();
@@ -176,10 +192,13 @@ export default class Stage extends Phaser.Scene {
             //this.enemySpawnTick = 500;
         }
 
+        //TODO: das nur ein boss gespawnt wird
         if (!this.bossSpawned) {
+            this.baseSpawn();
             this.bossSpawn();
             this.bossSpawned = true;
         }
+
     }
 
     addPushListener(arr, callback) {

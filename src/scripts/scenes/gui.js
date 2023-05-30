@@ -21,6 +21,16 @@ export default class Gui extends Phaser.Scene {
             }
         })
 
+        this.life1 = this.add.group({
+            key: 'life',
+            repeat: 1,
+            setXY: {
+                x: 20,
+                y: 200,
+                stepX: 25
+            }
+        })
+
         this.pointLabel = this.add.text(280, 10, this.points);
 
         this.itemLabel = this.add.text(120, 10, "Item: ");

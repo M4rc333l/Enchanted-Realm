@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Base from '../objects/base';
+import Base from '../objects/base/base';
 'use strict';
 
 export default class ParrallaxBackground extends Phaser.Scene {
