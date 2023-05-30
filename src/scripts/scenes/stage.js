@@ -6,6 +6,7 @@ import FireEnemy from '../objects/enemies/hellscape/fireenemy';
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
 import Isaac from "../objects/enemies/hellscape/isaac";
+import Enemy3 from "../objects/enemies/hellscape/enemy3";
 import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
 
@@ -115,6 +116,7 @@ export default class Stage extends Phaser.Scene {
         //Random-Zahl generieren, um random zu bestimmen, ob Gegner rechts oder links von Hauptcharakter spawnen
         let randomNum = Phaser.Math.Between(0, 1);
         let randomY = Phaser.Math.Between(30, 200);
+        let randomX = Phaser.Math.Between(30, 200);
         let spawnpoint;
         let spawnSite;
 
@@ -130,6 +132,7 @@ export default class Stage extends Phaser.Scene {
         //TODo: x- & y-Position des Enemies
         let __x = spawnpoint;
         let __y = Phaser.Math.Between(10, 210);
+        let spawnEnemy3 = 230;
 
         for (let i = 0; i < 5; i++) {
             let randomTimer = Phaser.Math.Between(1000, 2000);
@@ -142,13 +145,23 @@ export default class Stage extends Phaser.Scene {
             }, randomTimer);
 
             //TODO: Isaac zeitversetzt spawnen
-            let randomTimer2 = Phaser.Math.Between(1000, 2000);
             setTimeout(() => {
                 let isaac = new Isaac({scene: this, x: __x, y: __y}, this.enemyPool, this.player, spawnSite, randomY, 'enemy2');
                 isaac.body.setSize(20, 30);
                 this.enemyPool.push(isaac);
             }, randomTimer + 1000);
+
+            //TODO: Enemy3 zeitversetzt spawnen
+            setTimeout(() => {
+                randomX = this.player.x;
+
+                let enemy3 = new Enemy3({scene: this, x: __x, y: spawnEnemy3}, this.enemyPool, this.player, spawnSite, randomX, 'enemy2');
+                enemy3.body.setSize(20, 30);
+                this.enemyPool.push(enemy3);
+            }, i*100);
         }
+
+
     }
 
     bossSpawn(){
