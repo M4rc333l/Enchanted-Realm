@@ -1,7 +1,7 @@
 import Enemy from '../../enemy.js';
 
 export default class FireEnemy extends Enemy {
-    constructor(config, fellows, player, spawnSite, image) {
+    constructor(config, fellows, player, spawnSite, randomY, image) {
         super(config, fellows, player, image);
         this.tick = 0;
         this._x = config.x;
@@ -11,8 +11,10 @@ export default class FireEnemy extends Enemy {
         this.player = player;
         this.cooldown = 1;
         this.spawnSite = spawnSite;
+        this.randomY = randomY;
         this.counter = 0;
     }
+
     moveAlgorithm() {
         //TODO: keine Ahnung, keine eindeutige Veränderung wenn weg
         this.tick += 0.01 + Math.random() * 0.03;
@@ -30,10 +32,12 @@ export default class FireEnemy extends Enemy {
         //TODO: Speed festlegen + Richtung
         if (this.spawnSite == 0){
             this._x += 3;
+            this._y += this.randomY;
             this.counter += 1;
         }
         else if(this.spawnSite == 1) {
             this._x -= 3;
+            this._y += this.randomY;
             this.counter += 1;
         }
 

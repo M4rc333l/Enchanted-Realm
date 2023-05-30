@@ -109,34 +109,42 @@ export default class Stage extends Phaser.Scene {
     enemySpawn(){
         //Random-Zahl generieren, um random zu bestimmen, ob Gegner rechts oder links von Hauptcharakter spawnen
         let randomNum = Phaser.Math.Between(0, 1);
+        let randomY = Phaser.Math.Between(30, 200);
         let spawnpoint;
         let spawnSite;
 
         if(randomNum == 0){
-            spawnpoint = this.player.x - 200;
+            spawnpoint = this.player.x - 250;
             spawnSite = 0;
         }
         else{
-            spawnpoint = this.player.x + 200;
+            spawnpoint = this.player.x + 250;
             spawnSite = 1;
         }
 
+        //TODo: x- & y-Position des Enemies
         let __x = spawnpoint;
         let __y = Phaser.Math.Between(10, 210);
 
-        //todo mit time out sind die zeit versetzt
         for (let i = 0; i < 5; i++) {
-            let en = new FireEnemy({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, spawnSite, 'enemy');
-            en.body.setSize(20, 30);
-            this.enemyPool.push(en);
+            let randomTimer = Phaser.Math.Between(1000, 2000);
+            //TODO: FireEnemy zeitversetzt spawnen
             setTimeout(() => {
-                let isaac = new Isaac({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, spawnSite, __y, 'enemy2');
+                let en = new FireEnemy({scene: this, x: __x, y: __y}, this.enemyPool, this.player, spawnSite, randomY, 'enemy');
+                en.body.setSize(20, 30);
+                this.enemyPool.push(en);
+            }, randomTimer);
+
+            //TODO: Isaac zeitversetzt spawnen
+            let randomTimer2 = Phaser.Math.Between(1000, 2000);
+            setTimeout(() => {
+                let isaac = new Isaac({scene: this, x: __x, y: __y}, this.enemyPool, this.player, spawnSite, randomY, 'enemy2');
                 isaac.body.setSize(20, 30);
                 this.enemyPool.push(isaac);
-            },  2000); // Zeitversatz von 500ms zwischen den Gegnern (anpassbar)
+            }, randomTimer + 1000);
         }
-
     }
+
 
     //todo neu
     bossSpawn(){
