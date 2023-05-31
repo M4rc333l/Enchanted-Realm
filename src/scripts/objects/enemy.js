@@ -1,14 +1,10 @@
 export default class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(config, fellows, player, image) {
+    constructor(config, image) {
         super(config.scene, config.x, config.y, image);
         this.context = config.scene;
-        this.xspeed = 1.5;
-        this.yspeed = 1;
+        this.player = this.context.player;
         this.health = 100;
-        this.player = player;
-        this.fellows = fellows ? fellows : [];
-        this.fellowForce = new Phaser.Math.Vector2(0,0);
-        this.lock = false;
+        this.counter = 0;
         this.create();
     }
     preload(){
@@ -17,17 +13,26 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         this.context.add.existing(this);
         this.context.physics.add.existing(this);
     }
-    update() {
-        this.moveAlgorithm();
+    update(time, delta) {
+        this.counter++;
+        this.removeEnemy(3200);
+        this.moveAlgorithm(time, delta);
     }
-
-    moveAlgorithm() {
+    moveAlgorithm(time, delta) {
 
     }
     takeDamage(damage) {
         this.health -= damage;
         if(this.health <= 0) {
             this.scene.registry.events.emit('enemyDestroyed');
+            this.delete();
+        }
+    }
+    delete() {
+        this.context.removeEnemy(this);
+    }
+    removeEnemy(pixel) {
+        if (this.counter >= pixel) {
             this.destroy();
         }
     }

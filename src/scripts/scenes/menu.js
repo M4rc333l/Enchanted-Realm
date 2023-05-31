@@ -1,4 +1,6 @@
 import ParrallaxBackground from "./parrallaxBackground";
+import stageConfigs from "./stageData.js";
+import request from "../request.js"
 
 export default class Menu extends Phaser.Scene {
     constructor() {
@@ -9,13 +11,18 @@ export default class Menu extends Phaser.Scene {
         this.scene.bringToTop();
     }
     preload(){
-        this.load.image('startLogo', '../../assets/objects/startLogo.png');
     }
     create() {
-        const x = this.cameras.main.worldView.x + this.cameras.main.width/2;
-        const y = this.cameras.main.worldView.y + this.cameras.main.height/2;
+        this.cx = this.cameras.main.worldView.x + this.cameras.main.width/2;
+        this.cy = this.cameras.main.worldView.y + this.cameras.main.height/2;
 
-        this.startLogo = this.add.text(x, y, "Start",
+        this.username = '';
+        this.highscore = null;
+        this.defeatedEnemies = 0;
+        
+        this.info = this.add.text(this.cx,this.cy,'').setOrigin(0.5).setAlign("center").setColor('white');
+
+        this.startLogo = this.add.text(this.cx, this.cy + 10, "Start",
             { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
             .setInteractive().setOrigin(0.5)
             .on('pointerover', () => this.buttonHover('blue'))
@@ -26,17 +33,41 @@ export default class Menu extends Phaser.Scene {
                 targets: this.startLogo,
                 y: -200,
                 onComplete: () => {
-                    this.scene.start('Stage')
+                    this.scene.start('Stage', stageConfigs.hellscapeConfig)
+                    this.scene.stop('Background');
                 }
             });
         });
         this.ticker = 0;
+        Phaser.Display.Canvas.CanvasInterpolation.setCrisp(this.game.canvas)
+        this.inputKeys = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+            shoot: Phaser.Input.Keyboard.KeyCodes.SPACE,
+        })
+
+        request("/highscore","GET").then((result)=>{
+            if(result.status == 200) {
+                this.highscore = result.body.highscore == null ? 'Keinen' : result.body.highscore;
+                this.defeatedEnemies = result.body.defeatedEnemy;
+                this.username = result.body.username;
+                this.info.text = `Hallo, ${this.username}!\nHighscore: ${this.highscore}\nEliminierte Gegner: ${this.defeatedEnemies}`;
+            } else {
+                this.info.text = `Hallo, Gast!\nViel Spaß beim Spiel`;
+            }
+        })
+
     }
     buttonHover(style){
         this.startLogo.setStyle({ fill: style});
     }
     update() {
         this.ticker+=0.001;
-        this.scene.get('Background').updatePosition(Math.sin(this.ticker)*500);
+        try {
+            this.scene.get('Background').updatePosition(Math.sin(this.ticker)*500);
+        } catch {}
+        this.info.y = this.cy - 50 + Math.sin(this.ticker*15)*5; 
     }
 }

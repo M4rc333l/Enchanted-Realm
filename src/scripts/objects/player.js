@@ -13,8 +13,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.playerVelocity = new Phaser.Math.Vector2();
         this.depth = 1;
         this.life = 3;
+        this.maxLife = 3;
         this._x = config.x;
         this._y = config.y;
+        this._playerVelocity = new Phaser.Math.Vector2();
+        this.lockRight = false;
+        this.dead = false;
         this.create();
     }
 
@@ -31,22 +35,26 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     update(time, delta){
-        let _playerVelocity = new Phaser.Math.Vector2();
-        if(this.inputKeys.left.isDown){
-            _playerVelocity.x -= this.xspeed * delta;
-        } 
-        if (this.inputKeys.right.isDown){
-            _playerVelocity.x += this.xspeed * delta;
-        }
-        if(this.inputKeys.up.isDown){
-            _playerVelocity.y -= this.yspeed * delta;
-        } 
-        if (this.inputKeys.down.isDown){
-            _playerVelocity.y += this.yspeed * delta;
+        if(this.dead) {
+            return;
         }
 
-        this._x += _playerVelocity.x;
-        this._y += _playerVelocity.y;
+        this._playerVelocity = new Phaser.Math.Vector2();
+        if(this.inputKeys.left.isDown){
+            this._playerVelocity.x -= this.xspeed * delta;
+        } 
+        if (this.inputKeys.right.isDown){
+            this._playerVelocity.x += this.xspeed * delta;
+        }
+        if(this.inputKeys.up.isDown){
+            this._playerVelocity.y -= this.yspeed * delta;
+        } 
+        if (this.inputKeys.down.isDown){
+            this._playerVelocity.y += this.yspeed * delta;
+        }
+
+        this._x += this._playerVelocity.x;
+        this._y += this._playerVelocity.y;
 
         this.x += (this._x - this.x) * 0.2;
         this.y += (this._y - this.y) * 0.2;
@@ -60,10 +68,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.y = 224-this.margin;
         }
 
-        if(_playerVelocity.x > 0) {
+        if(this._playerVelocity.x > 0) {
             this.flipX = true;
         }
-        if(_playerVelocity.x < 0) {
+        if(this._playerVelocity.x < 0 && this.lockRight == false) {
             this.flipX = false;
         }
 
@@ -91,20 +99,23 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if(!this.delay){
             this.delay = true;
             this.life--;
-            this.scene.registry.events.emit('loseLife');
+            this.scene.registry.events.emit('onLifeStateChanged', this.life);
             if(this.life === 0) {
                 this.scene.registry.events.emit('gameOver');
+                this.destroy();
+                this.dead = true;
+                return;
             }
-            this.playerBlinking(10);
+            this.playerBlinking(20);
         }
     }
     playerBlinking(i){
         if(i>0){
             this.scene.time.addEvent({
-                delay: 400,
+                delay: 100,
                 callback: () => {
                     if(i%2===0){
-                        this.setBlendMode(Phaser.BlendModes.LIGHTER);
+                        this.setBlendMode(Phaser.BlendModes.SCREEN);
                     }
                     else {
                         this.setBlendMode(Phaser.BlendModes.NORMAL);

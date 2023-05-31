@@ -39,10 +39,14 @@ export default class ParrallaxBackground extends Phaser.Scene {
         this.backgrounds = [];
 
         for (const name of this.imageNames) {
-            let part = this.add.tileSprite(0, 0, this.bgWidth*4, 224, name);
-            part.setOrigin(0, 0);
-            part.depth = 10;
-            this.backgrounds.push(part);
+            this.backgrounds.push([]);
+            for(let i = 0; i < 4; i++) {
+                let part = this.add.image(0, 0, name);
+                part.setOrigin(0, 0);
+                part.depth = 10;
+                this.backgrounds[this.backgrounds.length-1].push(part);
+            }
+
         }
 
         this._position = 1200;
@@ -58,12 +62,14 @@ export default class ParrallaxBackground extends Phaser.Scene {
 
     update() {
         for (let i = 0; i < this.imageNames.length; i++) {
-            //this.backgrounds[i].x = (Math.floor(position / this.bgWidth) * this.bgWidth + (-this.scales[i] * position * this.depth) % this.bgWidth) - this.bgWidth;
+            for(let j = 0; j < 4; j++) {            
+                //this.backgrounds[i].x = (Math.floor(position / this.bgWidth) * this.bgWidth + (-this.scales[i] * position * this.depth) % this.bgWidth) - this.bgWidth;
             
-            let segment = Math.floor(this.position * (this.scales[i]) / this.bgWidth) - 2;
-
-            this.backgrounds[i].x = (segment*this.bgWidth) -(this.position * this.scales[i])
-            this.backgrounds[i].x = Math.floor(this.backgrounds[i].x);
+                let segment = Math.floor(this.position * (this.scales[i]) / this.bgWidth) - 2;
+    
+                this.backgrounds[i][j].x = ((segment*this.bgWidth) -(this.position * this.scales[i])) + j * this.bgWidth
+                this.backgrounds[i][j].x = Math.floor(this.backgrounds[i][j].x);
+            }
         }
     }
     translate(x) {

@@ -1,6 +1,7 @@
 <template id="game_view">
     <img id="fullscreen-icon" v-on:click="switchFullscreen()" src="../assets/misc/fullscreen-icon.png">
-    <canvas id="phaser-game" ref="phaser_game"></canvas>
+    <img id="navigateback-icon" v-on:click="navigateBack()" src="../assets/misc/navigateback-icon.png">
+    <canvas id="phaser-game" ref="phaser_game" style="image-rendering:pixelated;" width="320" height="224"></canvas>
 </template>
 
 
@@ -8,6 +9,7 @@
 
 import config from '../scripts/game.js';
 import Phaser from 'phaser';
+import request from '../scripts/request.js';
 
 export default {
   name: 'App',
@@ -57,6 +59,11 @@ export default {
       } else {
         this.openFullscreen();
       }
+    },
+
+    navigateBack() {
+      this.$router.push("/login");
+      request("/logout","GET");
     }
   }
 }

@@ -2,13 +2,11 @@ import 'phaser';
 import ParrallaxBackground from './parrallaxBackground';
 import Player from '../objects/player';
 import Enemy from "../objects/enemy";
-import FireEnemy from '../objects/enemies/hellscape/fireenemy';
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
-import Isaac from "../objects/enemies/hellscape/isaac";
-import Enemy3 from "../objects/enemies/hellscape/enemy3";
 import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
+import Factory from "../objects/enemies/enemyfactory.js"
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -18,12 +16,27 @@ export default class Stage extends Phaser.Scene {
     {
         if(Object.keys(data).length === 0) {
             data = {};
-            data.stageConfig = {name: 'hellscape', count:5, bgWidth: 320};
+            data.backgroundConfig = {name: 'factory', count:5, bgWidth: 352};
+            data.factoryPattern = {};
         }
 
         this.scene.launch('Gui');
-        this.scene.launch('Background',{config: data.stageConfig});
+        this.scene.launch('Background',{config: data.backgroundConfig});
         this.bg = this.scene.get('Background');
+        this.bossSpawned = false;
+        this.cameraOffset = 0
+        this.aestheticOffset = 0;
+
+        this.points = 0;
+
+        this.states = {
+            baseRemain: 0,
+            boss: 1
+        }
+
+        this.state = 0;
+        this.factory = new Factory({context:this, pattern:data.factoryPattern});
+
     }
     preload() {
         //TODO: Player
@@ -48,17 +61,19 @@ export default class Stage extends Phaser.Scene {
     }
 
     create() {
-
+        console.log('CREATE');
         this.physics.world.checkCollision.left = false;
         this.physics.world.checkCollision.right = false;
 
-        this.player = new Player({scene:this, x:200, y:200, name:'player'});
-        this.cameras.main.startFollow(this.player,false,1,0,0,88)
+        this.player = new Player({scene:this, x:0, y:110, name:'player'});
+        this.cameras.main.startFollow(this.player,false,1,0,0,0)
 
         this.bulletPool = [];
         this.addPushListener(this.bulletPool, this.onBulletCreated);
         this.enemyPool = [];
-        this.addPushListener(this.enemyPool, this.onEnemyCreated);
+        this.addPushListener(this.enemyPool, ()=>{});
+        this.basePool = [];
+        this.addPushListener(this.basePool, ()=>{})
 
         this.enemySpawnTick = 0;
 
@@ -79,6 +94,15 @@ export default class Stage extends Phaser.Scene {
                 this.itemSpawn();
             }
         });
+
+        this.registry.events.on('gameOver', () => {
+            this.registry.events.removeAllListeners();
+            this.scene.stop('Gui');
+            this.scene.launch('End');
+        });
+
+        this.factory.create();
+        this.baseSpawn(-1000,1000);
     }
     itemSpawn(){
         this.itemDelay = true;
@@ -112,6 +136,7 @@ export default class Stage extends Phaser.Scene {
         });
     }
 
+    /*
     enemySpawn(){
         //Random-Zahl generieren, um random zu bestimmen, ob Gegner rechts oder links von Hauptcharakter spawnen
         let randomNum = Phaser.Math.Between(0, 1);
@@ -163,32 +188,37 @@ export default class Stage extends Phaser.Scene {
 
 
     }
-
+**/
     bossSpawn(){
-        let __x = 300;
+        let __x = this.cameras.main.scrollX + 400;
         let __y = 100;
-        let boss = new Glurak({ scene: this, x: __x, y: __y }, this.enemyPool, this.player, 'boss');
+        let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss');
+        console.log(boss);
         boss.body.setSize(114, 80);
         this.enemyPool.push(boss);
     }
 
-    baseSpawn(){
-        let __x = 30;
-        let __y = 10;
+    baseSpawn(min, max){
+        for(let i = 0; i < 10; i++) {
+            let offset = i * (max-min)/10;
+            let randomX = Phaser.Math.Between(min+offset+5, min+offset + (max-min)/10-5);
+            let randomY = Phaser.Math.Between(10,190);
 
-            let randomY = Phaser.Math.Between(30, 190);
-
-            let base1 = new Base({scene: this, x: __x, y: __y}, this.enemyPool, this.player, 100, randomY, 'base1');
-            base1.body.setSize(14, 12);
-            this.enemyPool.push(base1);
-            let base2 = new Base({scene: this, x: __x, y: __y}, this.enemyPool, this.player, 300, randomY, 'base1');
-            base2.body.setSize(14, 12);
-            this.enemyPool.push(base2);
+            let base1 = new Base({scene: this, x: randomX, y: randomY}, 'base1');
+            this.basePool.push(base1);
+        }
     }
 
     update(time, delta) {
-        this.bg.updatePosition(this.cameras.main.scrollX);
+        this.bg.updatePosition(this.aestheticOffset + this.cameras.main.scrollX);
         this.player.update(time, delta);
+
+        this.cameraOffset = this.state == this.states.baseRemain ? 0 : -90;
+        this.cameras.main.followOffset.x += (this.cameraOffset - this.cameras.main.followOffset.x) * 0.02;
+
+        if(this.state == this.states.boss) {
+            this.aestheticOffset += delta * 0.07;
+        }
 
         for(const obj of this.bulletPool) {
             obj.update(time, delta);
@@ -198,10 +228,9 @@ export default class Stage extends Phaser.Scene {
         }
 
         //TODO: wie viele enemys spawnen
-        this.enemySpawnTick--;
+        /*this.enemySpawnTick--;
         if(this.enemySpawnTick < 0) {
-            this.enemySpawn();
-            this.enemySpawnTick = 500;
+            //this.enemySpawn();
             //this.enemySpawnTick = 500;
         }
 
@@ -210,8 +239,7 @@ export default class Stage extends Phaser.Scene {
             this.baseSpawn();
             this.bossSpawn();
             this.bossSpawned = true;
-        }
-
+        }*/
     }
 
     addPushListener(arr, callback) {
@@ -222,7 +250,7 @@ export default class Stage extends Phaser.Scene {
     }
 
     onBulletCreated(context, bullet) {
-        context.physics.add.overlap(bullet, context.enemyPool, (bullet, enemy) => {
+        context.physics.add.overlap(bullet, context.enemyPool.concat(context.basePool), (bullet, enemy) => {
             console.log(bullet);
             Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
             enemy.takeDamage(30);
@@ -235,6 +263,38 @@ export default class Stage extends Phaser.Scene {
         });
     }
 
-    onEnemyCreated(enemy) {
+    removeEnemy(enemy) {
+        enemy.destroy();
+        this.addPoints(10);
     }
+
+    removeBase(base) {
+        base.destroy();
+        
+        let activeCount = 0;
+        for(let base of this.basePool) {
+            if(base.active == true) {
+                activeCount ++;
+            }
+        }
+
+        if(activeCount <= 2) {
+            for(let base of this.basePool) {
+                base.destroy();
+            }
+            this.factory.deactivate();
+            this.bossSpawn();
+            this.state = 1;
+            this.player.lockRight = true;
+        }
+
+        this.addPoints(50);
+        this.registry.events.emit('onBaseStateChanged', this.basePool);
+    }
+
+    addPoints(points) {
+        this.points += points;
+        this.registry.events.emit('onPointsChanged', this.points);
+    }
+
 }

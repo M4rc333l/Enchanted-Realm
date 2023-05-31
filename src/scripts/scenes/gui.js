@@ -5,14 +5,17 @@ export default class Gui extends Phaser.Scene {
     }
     init (){
         this.scene.moveUp();
-        this.points = 0;
     }
     preload(){
-        this.load.image('life', '../../assets/objects/life.png')
+        this.load.image('heart_red', '../../assets/objects/heart_red.png')
+        this.load.image('heart_container', '../../assets/objects/heart_container.png')
+        this.load.image('base_container', '../../assets/gui/base_container.png')
+        this.load.image('base_filled_container', '../../assets/gui/base_filled_container.png')
     }
     create (){
-        this.life = this.add.group({
-            key: 'life',
+
+        this.heartGroup = this.add.group({
+            key: 'heart_container',
             repeat: 2,
             setXY: {
                 x: 20,
@@ -21,26 +24,46 @@ export default class Gui extends Phaser.Scene {
             }
         })
 
-        this.life1 = this.add.group({
-            key: 'life',
+        this.heartGroup = this.add.group({
+            key: 'heart_red',
+            repeat: 2,
+            setXY: {
+                x: 20,
+                y: 20,
+                stepX: 25
+            }
+        })
+
+        this.baseGroup = this.add.group({
+            key: 'base_filled_container',
+            repeat: 9,
+            setXY: {
+                x: 320/2 - 60,
+                y: 218,
+                stepX: 12
+            }
+        })
+
+        /*this.life1 = this.add.group({
+            key: 'heart_red',
             repeat: 1,
             setXY: {
                 x: 20,
                 y: 200,
                 stepX: 25
             }
-        })
+        })*/
 
-        this.pointLabel = this.add.text(280, 10, this.points);
+        this.pointLabel = this.add.text(280, 10, 0);
 
         this.itemLabel = this.add.text(120, 10, "Item: ");
 
-        this.registry.events.on('enemyDestroyed', () => {
-            this.points+=10;
-            this.pointLabel.setText(this.points);
+        this.registry.events.on('onPointsChanged', (points) => {
+            this.pointLabel.setText(points);
         });
-        this.registry.events.on('activateSpeedItem', () => {
-            this.itemLabel.setText(this.itemLabel.text+"Speed");
+
+        this.registry.events.on('activateItem', (preview) => {
+            this.itemLabel.setText(this.itemLabel.text+preview);
             this.time.addEvent({
                 delay: 5000,
                 callback: () => {
@@ -48,31 +71,22 @@ export default class Gui extends Phaser.Scene {
                 }
             });
         });
-        this.registry.events.on('playerProtection', () => {
-            this.itemLabel.setText(this.itemLabel.text+"Immortal");
-            this.time.addEvent({
-                delay: 5000,
-                callback: () => {
-                    this.itemLabel.setText("Item: ");
-                }
-            });
+
+        this.registry.events.on('onBaseStateChanged', (basePool) => {
+            for(let i = 0; i < 10; i++) {
+                let texture = basePool[i].active == true ? 'base_filled_container' : 'base_container';
+                this.baseGroup.children.entries[i].setTexture(texture);
+            }
         });
-        this.registry.events.on('activateLaserItem', () => {
-            this.itemLabel.setText(this.itemLabel.text+"LaserGun");
-            this.time.addEvent({
-                delay: 5000,
-                callback: () => {
-                    this.itemLabel.setText("Item: ");
-                }
-            });
-        });
-        this.registry.events.on('loseLife', () => {
-            this.life.getChildren()[this.life.getChildren().length - 1].destroy();
-        });
-        this.registry.events.on('gameOver', () => {
-            this.registry.events.removeAllListeners();
-            this.scene.pause('Stage');
-            this.scene.start('End');
+
+        this.registry.events.on('onLifeStateChanged', (lifes) => {
+            for(let i = 0; i < this.heartGroup.getLength(); i++) {
+                this.heartGroup.children.entries[i].visible = i < lifes
+            }
         });
     }
+
+
+    
+
 }

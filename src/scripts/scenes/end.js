@@ -7,7 +7,6 @@ export default class end extends Phaser.Scene {
         this.scene.bringToTop();
     }
     preload(){
-        this.load.image('endLogo', '../../assets/objects/gameOver.png');
     }
     create() {
         const x = this.cameras.main.worldView.x + this.cameras.main.width/2;

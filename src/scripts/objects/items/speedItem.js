@@ -6,7 +6,7 @@ export default class SpeedItem extends Item {
         this.player = player;
     }
     collected(){
-        this.scene.registry.events.emit('activateSpeedItem');
+        this.scene.registry.events.emit('activateItem', 'Speed');
         this.player.xspeed+= 0.02;
         this.player.yspeed+= 0.02;
         this.scene.time.addEvent({
