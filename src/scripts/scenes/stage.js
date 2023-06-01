@@ -58,6 +58,8 @@ export default class Stage extends Phaser.Scene {
 
         //TODO basen
         this.load.image('base1', '../../assets/basen/pokemon/testbase.png');
+        this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
+
     }
 
     create() {
@@ -103,7 +105,25 @@ export default class Stage extends Phaser.Scene {
 
         this.factory.create();
         this.baseSpawn(-1000,1000);
+
+        if(!this.game.device.os.desktop) {
+            this.joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+                x: 50,
+                y: 170,
+                radius: 20,
+                base: this.add.circle(0, 0, 20, 0x1c1c1c),
+                thumb: this.add.circle(0, 0, 10, 0x3b3b3b),
+                forceMin: 0,
+            });
+            this.joyStick.base.depth=2;
+            this.joyStick.thumb.depth=2;
+        } else {
+            this.joyStick = {};
+            this.joyStick.force = 0;
+            this.joyStick.angle = 0;
+        }
     }
+
     itemSpawn(){
         this.itemDelay = true;
         if(this.itemPool.length>0){
@@ -211,6 +231,8 @@ export default class Stage extends Phaser.Scene {
 
     update(time, delta) {
         this.bg.updatePosition(this.aestheticOffset + this.cameras.main.scrollX);
+        this.player.joyStickForce = this.joyStick.force;
+        this.player.joyStickAngle = this.joyStick.angle;
         this.player.update(time, delta);
 
         this.cameraOffset = this.state == this.states.baseRemain ? 0 : -90;

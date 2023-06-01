@@ -18,7 +18,9 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
         width: 320,
         height: 224,
-    },
+    },input :{
+      activePointers:3,
+      },
     physics: {
         default: "arcade",
         arcade: {

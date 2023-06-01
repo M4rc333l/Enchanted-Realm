@@ -53,6 +53,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this._playerVelocity.y += this.yspeed * delta;
         }
 
+        if(this.joyStickForce != 0) {
+            let force = this.joyStickForce.clamp(0,20) / 20;
+            let radian = this.joyStickAngle * (Math.PI/180);
+            let velocity = new Phaser.Math.Vector2(Math.cos(radian), Math.sin(radian))
+
+            this._playerVelocity.x += this.xspeed * delta * velocity.x * force;
+            this._playerVelocity.y += this.yspeed * delta * velocity.y * force;
+        }
+
         this._x += this._playerVelocity.x;
         this._y += this._playerVelocity.y;
 
@@ -75,7 +84,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.flipX = false;
         }
 
-        if (this.inputKeys.shoot.isDown){
+        var pointer1 = this.context.input.pointer1;
+        var pointer2 = this.context.input.pointer2;
+
+        if (this.inputKeys.shoot.isDown || (pointer1.isDown & pointer1.x > 150) || (pointer2.isDown & pointer2.x > 150)){
             this.shootTick-= delta * 0.15;
             if(this.shootTick < 0) {
                 this.shoot(-2);

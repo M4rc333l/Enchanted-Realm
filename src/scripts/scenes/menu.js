@@ -39,14 +39,6 @@ export default class Menu extends Phaser.Scene {
             });
         });
         this.ticker = 0;
-        Phaser.Display.Canvas.CanvasInterpolation.setCrisp(this.game.canvas)
-        this.inputKeys = this.input.keyboard.addKeys({
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            down: Phaser.Input.Keyboard.KeyCodes.S,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D,
-            shoot: Phaser.Input.Keyboard.KeyCodes.SPACE,
-        })
 
         request("/highscore","GET").then((result)=>{
             if(result.status == 200) {
