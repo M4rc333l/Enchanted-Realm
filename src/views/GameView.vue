@@ -21,7 +21,6 @@ export default {
   },
   methods: {
     initGame: function() {
-        console.log(this.$refs.phaser_game);
         config.canvas = this.$refs.phaser_game;
         new Phaser.Game(config); 
     },

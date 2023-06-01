@@ -63,7 +63,6 @@ export default class Stage extends Phaser.Scene {
     }
 
     create() {
-        console.log('CREATE');
         this.physics.world.checkCollision.left = false;
         this.physics.world.checkCollision.right = false;
 
@@ -213,7 +212,6 @@ export default class Stage extends Phaser.Scene {
         let __x = this.cameras.main.scrollX + 400;
         let __y = 100;
         let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss');
-        console.log(boss);
         boss.body.setSize(114, 80);
         this.enemyPool.push(boss);
     }
@@ -273,7 +271,6 @@ export default class Stage extends Phaser.Scene {
 
     onBulletCreated(context, bullet) {
         context.physics.add.overlap(bullet, context.enemyPool.concat(context.basePool), (bullet, enemy) => {
-            console.log(bullet);
             Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
             enemy.takeDamage(30);
         });
