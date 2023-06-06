@@ -110,6 +110,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         return this.distance;
     }
     shoot(horizontalOffset = 0) {
+        this.scene.registry.events.emit('shoots');
         let bullet = new Bullet({scene:this.context, x:8, y:3, name:'bullet_normal'});
         bullet.x = this.x;
         bullet.y = this.y + horizontalOffset;
@@ -117,6 +118,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.context.bulletPool.push(bullet);
     }
     enemyCollision() {
+        this.scene.registry.events.emit('hit');
         if(!this.delay){
             this.delay = true;
             this.life--;

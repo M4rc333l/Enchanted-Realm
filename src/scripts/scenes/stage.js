@@ -71,9 +71,40 @@ export default class Stage extends Phaser.Scene {
 
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
+        this.load.audio('backgroundMusic', '../../assets/audio/Level1.mp3');
+        this.load.audio('GameOver', '../../assets/audio/GameOver.mp3');
+        this.load.audio('shoots', '../../assets/audio/shoots.mp3');
+        this.load.audio('laserShoot', '../../assets/audio/laserShoot.mp3');
+        this.load.audio('pickupItem', '../../assets/audio/pickupItem.wav');
+        this.load.audio('hit', '../../assets/audio/hitHurt.wav');
+        this.load.audio('Salatsosse', '../../assets/audio/Salatsosse.mp3');
     }
 
     create() {
+
+        var backgroundMusic = this.sound.add('backgroundMusic');
+        var gameOver = this.sound.add('GameOver');
+        var shoots = this.sound.add('shoots');
+        var lasershoot = this.sound.add('laserShoot');
+        var pickupItem = this.sound.add('pickupItem');
+        var hit = this.sound.add('hit');
+        var Salatsosse = this.sound.add('Salatsosse');
+        backgroundMusic.setLoop(true);
+        backgroundMusic.play();
+        backgroundMusic.volume = 0.5;
+        this.registry.events.on('shoots', () => {
+            if (this.player.shootMaxTick !== 40){
+                lasershoot.play();
+            }
+            else {
+                shoots.play();
+            }
+
+        });
+        this.registry.events.on('hit', () => {
+            hit.play();
+        });
+
         this.physics.world.checkCollision.left = false;
         this.physics.world.checkCollision.right = false;
 

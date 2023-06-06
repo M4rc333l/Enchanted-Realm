@@ -3,15 +3,15 @@ import request from '../../scripts/request.js';
 export default{
     data() {
         return {
-            defeatedEnemys: '',
-            distance: '',
-            score: ''
+            score: '',
+            defeatedEnemy: '',
+            distance: ''
         }
     },
     methods: {
-        async gameStatistic(defeatedEnemys, distance, score) {
-            let result = await request('/gameStatistic', 'POST', {defeatedEnemys:defeatedEnemys,
-                distance:distance, score:score});
+        async gameStatistic(score, defeatedEnemy, distance) {
+            let result = await request('/gameStatistic', 'POST', {score:score,
+                defeatedEnemy:defeatedEnemy, distance:distance});
             if(result.status != 200) {
                 this.message = result.body.msg;
             }
