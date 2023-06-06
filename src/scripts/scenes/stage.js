@@ -8,6 +8,7 @@ import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
 import ProtectionItem from "@/scripts/objects/items/protectionItem";
+import BossBullet from "@/scripts/objects/bossBullet";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -52,16 +53,17 @@ export default class Stage extends Phaser.Scene {
         this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
         this.load.image('enemy3', '../../assets/enemy/hellscape/hellscape_en_03.png');
 
-        //TODO: Bosse
+        //TODO: Bosse & Bullets
         this.load.image('boss1', '../../assets/enemy/pokemon/glumanda.png');
         this.load.image('boss2', '../../assets/enemy/hellscape/boss_isaac.png');
+        this.load.image('bossBullet2', '../../assets/enemy/hellscape/bullet_isaac_boss.png');
 
         //TODO: Objekte
         this.load.image('speed', '../../assets/objects/speed.png');
         this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
-        //TODO basen
-        this.load.image('base1', '../../assets/basen/pokemon/base_pokemon.png');
+        //TODO: Basen
+        this.load.image('base1', '../../assets/basen/pokemon/base_pokescape.png');
         this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
 
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
