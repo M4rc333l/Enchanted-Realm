@@ -32,7 +32,7 @@ export default class Stage extends Phaser.Scene {
         this.aestheticOffset = 0;
 
         this.points = 0;
-        this.defeatedEnemys = 0;
+        this.defeatedEnemy = 0;
 
         this.states = {
             baseRemain: 0,
@@ -140,7 +140,7 @@ export default class Stage extends Phaser.Scene {
 
         this.registry.events.on('gameOver', async(distance) => {
             this.registry.events.removeAllListeners();
-            await Statistic.methods.gameStatistic(this.defeatedEnemys, distance, this.points);
+            await Statistic.methods.gameStatistic(this.points, this.defeatedEnemy, distance);
             this.scene.stop('Gui');
             this.scene.launch('End');
         });
@@ -336,7 +336,7 @@ export default class Stage extends Phaser.Scene {
             }
         }
 
-        if(activeCount <= 2) {
+        if(activeCount <= 0) {
             for(let base of this.basePool) {
                 base.destroy();
             }
@@ -352,7 +352,7 @@ export default class Stage extends Phaser.Scene {
 
     addPoints(points) {
         this.points += points;
-        this.defeatedEnemys += 1;
+        this.defeatedEnemy += 1;
         this.registry.events.emit('onPointsChanged', this.points);
     }
 
