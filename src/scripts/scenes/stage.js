@@ -7,6 +7,7 @@ import LaserGun from "../objects/items/laserGun";
 import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
+import ProtectionItem from "@/scripts/objects/items/protectionItem";
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -49,12 +50,14 @@ export default class Stage extends Phaser.Scene {
         //TODO: Gegner
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
         this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
+        this.load.image('enemy3', '../../assets/enemy/hellscape/hellscape_en_03.png');
 
         //TODO: Bosse
         this.load.image('boss', '../../assets/enemy/pokemon/glumanda.png');
 
         //TODO: Objekte
-        this.load.image('life', '../../assets/objects/life.png');
+        this.load.image('speed', '../../assets/objects/speed.png');
+        this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
         //TODO basen
         this.load.image('base1', '../../assets/basen/pokemon/testbase.png');
@@ -131,20 +134,16 @@ export default class Stage extends Phaser.Scene {
         }
         let randomItem = Math.random();
         let sItem = null;
-        if(0 <= randomItem < 0.25){
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
+        if(randomItem>=0 && randomItem<0.4){
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'speed');
         }
-        else if(0.25 <= randomItem < 0.5){
-            //anderes Item
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
-        }
-        else if(0.5 <= randomItem < 0.75){
+        else if(randomItem>=0.4 && randomItem<0.8){
             //anderes Item
             sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
-        else if(0.75 <= randomItem <= 1){
+        else if(randomItem>=0.8 && randomItem<=1){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
+            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'unverwundbar');
         }
         this.itemPool.push(sItem);
         this.time.addEvent({
