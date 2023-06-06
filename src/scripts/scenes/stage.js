@@ -53,14 +53,17 @@ export default class Stage extends Phaser.Scene {
         this.load.image('enemy3', '../../assets/enemy/hellscape/hellscape_en_03.png');
 
         //TODO: Bosse
-        this.load.image('boss', '../../assets/enemy/pokemon/glumanda.png');
+        this.load.image('boss1', '../../assets/enemy/pokemon/glumanda.png');
+        this.load.image('boss2', '../../assets/enemy/hellscape/boss_isaac.png');
 
         //TODO: Objekte
         this.load.image('speed', '../../assets/objects/speed.png');
         this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
         //TODO basen
-        this.load.image('base1', '../../assets/basen/pokemon/testbase.png');
+        this.load.image('base1', '../../assets/basen/pokemon/base_pokemon.png');
+        this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
+
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
     }
@@ -210,7 +213,7 @@ export default class Stage extends Phaser.Scene {
     bossSpawn(){
         let __x = this.cameras.main.scrollX + 400;
         let __y = 100;
-        let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss');
+        let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss2');
         boss.body.setSize(114, 80);
         this.enemyPool.push(boss);
     }
@@ -221,7 +224,7 @@ export default class Stage extends Phaser.Scene {
             let randomX = Phaser.Math.Between(min+offset+5, min+offset + (max-min)/10-5);
             let randomY = Phaser.Math.Between(10,190);
 
-            let base1 = new Base({scene: this, x: randomX, y: randomY}, 'base1');
+            let base1 = new Base({scene: this, x: randomX, y: randomY}, 'base2');
             this.basePool.push(base1);
         }
     }
