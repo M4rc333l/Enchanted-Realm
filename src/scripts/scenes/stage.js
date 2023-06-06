@@ -7,6 +7,10 @@ import LaserGun from "../objects/items/laserGun";
 import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
+import ProtectionItem from "@/scripts/objects/items/protectionItem";
+import BossBullet from "@/scripts/objects/bossBullet";
+import Statistic from '../objects/statistic';
+
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -28,6 +32,7 @@ export default class Stage extends Phaser.Scene {
         this.aestheticOffset = 0;
 
         this.points = 0;
+        this.defeatedEnemys = 0;
 
         this.states = {
             baseRemain: 0,
@@ -49,15 +54,21 @@ export default class Stage extends Phaser.Scene {
         //TODO: Gegner
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
         this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
+        this.load.image('enemy3', '../../assets/enemy/hellscape/hellscape_en_03.png');
 
-        //TODO: Bosse
-        this.load.image('boss', '../../assets/enemy/pokemon/glumanda.png');
+        //TODO: Bosse & Bullets
+        this.load.image('boss1', '../../assets/enemy/pokemon/glumanda.png');
+        this.load.image('boss2', '../../assets/enemy/hellscape/boss_isaac.png');
+        this.load.image('bossBullet2', '../../assets/enemy/hellscape/bullet_isaac_boss.png');
 
         //TODO: Objekte
-        this.load.image('life', '../../assets/objects/life.png');
+        this.load.image('speed', '../../assets/objects/speed.png');
+        this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
-        //TODO basen
-        this.load.image('base1', '../../assets/basen/pokemon/testbase.png');
+        //TODO: Basen
+        this.load.image('base1', '../../assets/basen/pokemon/base_pokescape.png');
+        this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
+
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
     }
@@ -96,8 +107,9 @@ export default class Stage extends Phaser.Scene {
             }
         });
 
-        this.registry.events.on('gameOver', () => {
+        this.registry.events.on('gameOver', async(distance) => {
             this.registry.events.removeAllListeners();
+            await Statistic.methods.gameStatistic(this.defeatedEnemys, distance, this.points);
             this.scene.stop('Gui');
             this.scene.launch('End');
         });
@@ -131,20 +143,16 @@ export default class Stage extends Phaser.Scene {
         }
         let randomItem = Math.random();
         let sItem = null;
-        if(0 <= randomItem < 0.25){
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
+        if(randomItem>=0 && randomItem<0.4){
+            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'speed');
         }
-        else if(0.25 <= randomItem < 0.5){
-            //anderes Item
-            sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'life');
-        }
-        else if(0.5 <= randomItem < 0.75){
+        else if(randomItem>=0.4 && randomItem<0.8){
             //anderes Item
             sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
-        else if(0.75 <= randomItem <= 1){
+        else if(randomItem>=0.8 && randomItem<=1){
             //anderes Item
-            sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
+            sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'unverwundbar');
         }
         this.itemPool.push(sItem);
         this.time.addEvent({
@@ -211,7 +219,7 @@ export default class Stage extends Phaser.Scene {
     bossSpawn(){
         let __x = this.cameras.main.scrollX + 400;
         let __y = 100;
-        let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss');
+        let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss2');
         boss.body.setSize(114, 80);
         this.enemyPool.push(boss);
     }
@@ -222,7 +230,7 @@ export default class Stage extends Phaser.Scene {
             let randomX = Phaser.Math.Between(min+offset+5, min+offset + (max-min)/10-5);
             let randomY = Phaser.Math.Between(10,190);
 
-            let base1 = new Base({scene: this, x: randomX, y: randomY}, 'base1');
+            let base1 = new Base({scene: this, x: randomX, y: randomY}, 'base2');
             this.basePool.push(base1);
         }
     }
@@ -313,6 +321,7 @@ export default class Stage extends Phaser.Scene {
 
     addPoints(points) {
         this.points += points;
+        this.defeatedEnemys += 1;
         this.registry.events.emit('onPointsChanged', this.points);
     }
 
