@@ -22,6 +22,10 @@
                     <p class="mb-0  text-center">Du besitzt noch keinen Account? <router-link to="register" 
                             class="text-primary fw-bold">Hier registrieren</router-link></p>
                 </div>
+              <div class="mt-3">
+                    <p class="mb-0  text-center">Du willst deinen Account löschen? <router-link to="delete"
+                            class="text-primary fw-bold">Hier Account löschen</router-link></p>
+              </div>
             </div>
         </div>
 </template>
@@ -44,9 +48,7 @@ export default {
             } else {
                 this.$router.push("/game");
             }
-
-            
-        }
+        },
     }
 }
 </script>

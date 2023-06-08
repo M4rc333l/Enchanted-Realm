@@ -9,6 +9,8 @@ import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
 import ProtectionItem from "@/scripts/objects/items/protectionItem";
 import stageConfigs from '../scenes/stageData.js';
+import BossBullet from "@/scripts/objects/bossBullet";
+import Statistic from '../objects/statistic';
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -35,6 +37,7 @@ export default class Stage extends Phaser.Scene {
         this.aestheticOffset = 0;
 
         this.points = 0;
+        this.defeatedEnemy = 0;
 
         this.states = {
             baseRemain: 0,
@@ -60,24 +63,54 @@ export default class Stage extends Phaser.Scene {
         this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
         this.load.image('enemy3', '../../assets/enemy/hellscape/hellscape_en_03.png');
 
-        //TODO: Bosse
+        //TODO: Bosse & Bullets
         this.load.image('boss1', '../../assets/enemy/pokemon/glumanda.png');
         this.load.image('boss2', '../../assets/enemy/hellscape/boss_isaac.png');
+        this.load.image('bossBullet2', '../../assets/enemy/hellscape/bullet_isaac_boss.png');
 
         //TODO: Objekte
         this.load.image('speed', '../../assets/objects/speed.png');
         this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
-        //TODO basen
-        this.load.image('base1', '../../assets/basen/pokemon/base_pokemon.png');
+        //TODO: Basen
+        this.load.image('base1', '../../assets/basen/pokemon/base_pokescape.png');
         this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
 
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
+        this.load.audio('backgroundMusic', '../../assets/audio/Level1.mp3');
+        this.load.audio('GameOver', '../../assets/audio/GameOver.mp3');
+        this.load.audio('shoots', '../../assets/audio/shoots.mp3');
+        this.load.audio('laserShoot', '../../assets/audio/laserShoot.mp3');
+        this.load.audio('pickupItem', '../../assets/audio/pickupItem.wav');
+        this.load.audio('hit', '../../assets/audio/hitHurt.wav');
+        this.load.audio('Salatsosse', '../../assets/audio/Salatsosse.mp3');
     }
 
     create() {
         this.cameras.main.fadeIn(1000,255,255,255);
+        var backgroundMusic = this.sound.add('backgroundMusic');
+        var gameOver = this.sound.add('GameOver');
+        var shoots = this.sound.add('shoots');
+        var lasershoot = this.sound.add('laserShoot');
+        var pickupItem = this.sound.add('pickupItem');
+        var hit = this.sound.add('hit');
+        var Salatsosse = this.sound.add('Salatsosse');
+        backgroundMusic.setLoop(true);
+        backgroundMusic.play();
+        backgroundMusic.volume = 0.5;
+        this.registry.events.on('shoots', () => {
+            if (this.player.shootMaxTick !== 40){
+                lasershoot.play();
+            }
+            else {
+                shoots.play();
+            }
+
+        });
+        this.registry.events.on('hit', () => {
+            hit.play();
+        });
 
         this.physics.world.checkCollision.left = false;
         this.physics.world.checkCollision.right = false;
@@ -112,8 +145,9 @@ export default class Stage extends Phaser.Scene {
             }
         });
 
-        this.registry.events.on('gameOver', () => {
+        this.registry.events.on('gameOver', async(distance) => {
             this.registry.events.removeAllListeners();
+            await Statistic.methods.gameStatistic(this.points, this.defeatedEnemy, distance);
             this.scene.stop('Gui');
             this.scene.launch('End');
         });
@@ -266,7 +300,7 @@ export default class Stage extends Phaser.Scene {
             }
         }
 
-        if(activeCount <= 2) {
+        if(activeCount <= 0) {
             for(let base of this.basePool) {
                 base.destroy();
             }
@@ -282,6 +316,7 @@ export default class Stage extends Phaser.Scene {
 
     addPoints(points) {
         this.points += points;
+        this.defeatedEnemy += 1;
         this.registry.events.emit('onPointsChanged', this.points);
     }
 

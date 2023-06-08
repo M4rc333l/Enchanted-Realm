@@ -19,6 +19,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this._playerVelocity = new Phaser.Math.Vector2();
         this.lockRight = false;
         this.dead = false;
+        this.distance = 0;
+        this.prevPosition = 0;
         this.create();
     }
 
@@ -35,6 +37,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     update(time, delta){
+
+        let a = this.x-this.prevPosition;
+        if(a>=0) this.distance += a;
+        else this.distance += -a;
+        this.prevPosition = this.x;
         if(this.dead) {
             return;
         }
@@ -99,8 +106,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.shootTick = 0;
         }
     }
-
+    getDistance(){
+        return this.distance;
+    }
     shoot(horizontalOffset = 0) {
+        this.scene.registry.events.emit('shoots');
         let bullet = new Bullet({scene:this.context, x:8, y:3, name:'bullet_normal'});
         bullet.x = this.x;
         bullet.y = this.y + horizontalOffset;
@@ -108,12 +118,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.context.bulletPool.push(bullet);
     }
     enemyCollision() {
+        this.scene.registry.events.emit('hit');
         if(!this.delay){
             this.delay = true;
             this.life--;
             this.scene.registry.events.emit('onLifeStateChanged', this.life);
             if(this.life === 0) {
-                this.scene.registry.events.emit('gameOver');
+                this.scene.registry.events.emit('gameOver', this.distance);
                 this.destroy();
                 this.dead = true;
                 return;

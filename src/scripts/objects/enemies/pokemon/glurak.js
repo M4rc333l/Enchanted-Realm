@@ -1,4 +1,5 @@
 import Enemy from '../../enemy.js';
+import BossBullet from "@/scripts/objects/bossBullet";
 
 
 export default class Glurak extends Enemy {
@@ -31,6 +32,14 @@ export default class Glurak extends Enemy {
             },
             loop: true
         });
+
+        var timer = this.context.time.addEvent({
+            delay: 500,
+            callback: ()=>{
+                let bossBullet = new BossBullet({scene:this.context, x: this._x, y: this._y}, 'bossBullet2', this._x, this.y);
+                this.context.enemyPool.push(bossBullet);},
+            loop: true
+        });
     }
 
     moveAlgorithm(time, delta) {
@@ -51,8 +60,7 @@ export default class Glurak extends Enemy {
 
         let speed = 0.1;
         this.x += ((this._x - this.x) * 0.04) * delta * 0.2;
-        this.y += ((this._y - this.y) * 0.04).clamp(-delta * speed, delta * speed); 
-
+        this.y += ((this._y - this.y) * 0.04).clamp(-delta * speed, delta * speed);
     }
 
 }
