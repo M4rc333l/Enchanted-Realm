@@ -69,12 +69,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.y += (this._y - this.y) * 0.2;
 
 
-        if(this.y < this.margin) {
-            this.y = this.margin;
+        if(this._y < this.margin) {
+            this._y = this.margin;
         }
 
-        if(this.y > 224-this.margin) {
-            this.y = 224-this.margin;
+        if(this._y > 224-this.margin) {
+            this._y = 224-this.margin;
         }
 
         if(this._playerVelocity.x > 0) {

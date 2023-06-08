@@ -8,6 +8,7 @@ import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
 import ProtectionItem from "@/scripts/objects/items/protectionItem";
+import stageConfigs from '../scenes/stageData.js';
 
 export default class Stage extends Phaser.Scene {
     constructor() {
@@ -23,8 +24,13 @@ export default class Stage extends Phaser.Scene {
 
         this.scene.launch('Gui');
         this.scene.launch('Background',{config: data.backgroundConfig});
+
         this.bg = this.scene.get('Background');
+        this.bg.scene.moveDown();
+        
         this.bossSpawned = false;
+        this.boss = null;
+        
         this.cameraOffset = 0
         this.aestheticOffset = 0;
 
@@ -32,9 +38,11 @@ export default class Stage extends Phaser.Scene {
 
         this.states = {
             baseRemain: 0,
-            boss: 1
+            boss: 1,
+            done: 2
         }
 
+        this.endedAnim = undefined;
         this.state = 0;
         this.factory = new Factory({context:this, pattern:data.factoryPattern});
 
@@ -69,6 +77,8 @@ export default class Stage extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.fadeIn(1000,255,255,255);
+
         this.physics.world.checkCollision.left = false;
         this.physics.world.checkCollision.right = false;
 
@@ -157,65 +167,13 @@ export default class Stage extends Phaser.Scene {
         });
     }
 
-    /*
-    enemySpawn(){
-        //Random-Zahl generieren, um random zu bestimmen, ob Gegner rechts oder links von Hauptcharakter spawnen
-        let randomNum = Phaser.Math.Between(0, 1);
-        let randomY = Phaser.Math.Between(30, 200);
-        let randomX = Phaser.Math.Between(30, 200);
-        let spawnpoint;
-        let spawnSite;
-
-        if(randomNum == 0){
-            spawnpoint = this.player.x - 250;
-            spawnSite = 0;
-        }
-        else{
-            spawnpoint = this.player.x + 250;
-            spawnSite = 1;
-        }
-
-        //TODo: x- & y-Position des Enemies
-        let __x = spawnpoint;
-        let __y = Phaser.Math.Between(10, 210);
-        let spawnEnemy3 = 230;
-
-        for (let i = 0; i < 5; i++) {
-            let randomTimer = Phaser.Math.Between(1000, 2000);
-
-            //TODO: FireEnemy zeitversetzt spawnen
-            setTimeout(() => {
-                let en = new FireEnemy({scene: this, x: __x, y: __y}, this.enemyPool, this.player, spawnSite, randomY, 'enemy');
-                en.body.setSize(20, 30);
-                this.enemyPool.push(en);
-            }, randomTimer);
-
-            //TODO: Isaac zeitversetzt spawnen
-            setTimeout(() => {
-                let isaac = new Isaac({scene: this, x: __x, y: __y}, this.enemyPool, this.player, spawnSite, randomY, 'enemy2');
-                isaac.body.setSize(20, 30);
-                this.enemyPool.push(isaac);
-            }, randomTimer + 1000);
-
-            //TODO: Enemy3 zeitversetzt spawnen
-            setTimeout(() => {
-                randomX = this.player.x;
-
-                let enemy3 = new Enemy3({scene: this, x: __x, y: spawnEnemy3}, this.enemyPool, this.player, spawnSite, randomX, 'enemy2');
-                enemy3.body.setSize(20, 30);
-                this.enemyPool.push(enemy3);
-            }, i*100);
-        }
-
-
-    }
-**/
     bossSpawn(){
         let __x = this.cameras.main.scrollX + 400;
         let __y = 100;
-        let boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss2');
-        boss.body.setSize(114, 80);
-        this.enemyPool.push(boss);
+        this.bossSpawned = true;
+        this.boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss2');
+        this.boss.body.setSize(114, 80);
+        this.enemyPool.push(this.boss);
     }
 
     baseSpawn(min, max){
@@ -235,13 +193,13 @@ export default class Stage extends Phaser.Scene {
         this.player.joyStickAngle = this.joyStick.angle;
         this.player.update(time, delta);
 
-        this.cameraOffset = this.state == this.states.baseRemain ? 0 : -90;
+        this.cameraOffset = this.state == this.states.boss ? -90 : 0;
         this.cameras.main.followOffset.x += (this.cameraOffset - this.cameras.main.followOffset.x) * 0.02;
 
         if(this.state == this.states.boss) {
             this.aestheticOffset += delta * 0.07;
         }
-
+        
         for(const obj of this.bulletPool) {
             obj.update(time, delta);
         }
@@ -249,19 +207,28 @@ export default class Stage extends Phaser.Scene {
             obj.update(time, delta);
         }
 
-        //TODO: wie viele enemys spawnen
-        /*this.enemySpawnTick--;
-        if(this.enemySpawnTick < 0) {
-            //this.enemySpawn();
-            //this.enemySpawnTick = 500;
+        if(this.bossSpawned == true) {
+            if(this.boss.active == false) {
+                this.state = this.states.done;
+                this.initEnd();
+            }
         }
+    }
 
-        //TODO: das nur ein boss gespawnt wird
-        if (!this.bossSpawned) {
-            this.baseSpawn();
-            this.bossSpawn();
-            this.bossSpawned = true;
-        }*/
+    initEnd() {
+        if(!this.endedAnim) {
+            this.endedAnim = true;
+            this.cameras.main.fadeOut(1000,255,255,255,(cam, progress)=>{ 
+                if(progress == 1) 
+                {
+                    this.scene.stop();
+                    this.scene.restart(stageConfigs.pokescapeConfig);
+                }
+            });
+            
+        console.log("END");
+        }
+            
     }
 
     addPushListener(arr, callback) {

@@ -7,7 +7,7 @@ export default class Menu extends Phaser.Scene {
         super({key: 'Menu'});
     }
     init() {
-        this.scene.launch('Background',{config: {name: 'factory', count:5, bgWidth:352}});
+        this.scene.launch('Background',{config: {name: 'pokescape', count:5, bgWidth:320}});
         this.scene.bringToTop();
     }
     preload(){
