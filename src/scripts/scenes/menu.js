@@ -17,7 +17,12 @@ export default class Menu extends Phaser.Scene {
         this.cx = this.cameras.main.worldView.x + this.cameras.main.width/2;
         this.cy = this.cameras.main.worldView.y + this.cameras.main.height/2;
 
-        statistic.getAchievements();
+        statistic.localdata.defeatedEnemy = 10;
+
+        statistic.getAchievements().then(()=>{
+            console.log(statistic.getSucceededAchievements());
+        });
+
 
         this.username = '';
         this.highscore = null;
