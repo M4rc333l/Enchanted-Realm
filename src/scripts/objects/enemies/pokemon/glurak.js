@@ -40,6 +40,8 @@ export default class Glurak extends Enemy {
                 this.context.enemyPool.push(bossBullet);},
             loop: true
         });
+
+        this.health = 1000;
     }
 
     moveAlgorithm(time, delta) {

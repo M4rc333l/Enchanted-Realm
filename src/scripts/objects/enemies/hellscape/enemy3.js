@@ -1,7 +1,7 @@
 import Enemy from '../../enemy.js';
 
 export default class Enemy3 extends Enemy {
-    constructor(config, spawnSite, randomX, image) {
+    constructor(config, randomX, image) {
         super(config, image);
         this._x = config.x;
         this._y = config.y;

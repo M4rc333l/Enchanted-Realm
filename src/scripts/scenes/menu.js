@@ -1,6 +1,7 @@
 import ParrallaxBackground from "./parrallaxBackground";
 import stageConfigs from "./stageData.js";
 import request from "../request.js"
+import statistic from "../objects/statistic";
 
 export default class Menu extends Phaser.Scene {
     constructor() {
@@ -15,6 +16,8 @@ export default class Menu extends Phaser.Scene {
     create() {
         this.cx = this.cameras.main.worldView.x + this.cameras.main.width/2;
         this.cy = this.cameras.main.worldView.y + this.cameras.main.height/2;
+
+        statistic.getAchievements();
 
         this.username = '';
         this.highscore = null;

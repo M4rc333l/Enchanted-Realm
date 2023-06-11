@@ -1,12 +1,26 @@
 import request from '../../scripts/request.js';
 
 export default{
-    data() {
-        return {
-            score: '',
-            defeatedEnemy: '',
-            distance: ''
-        }
+    globaldata: {
+        score: 0,
+        defeatedEnemy: 0,
+        distance: 0
+    },
+    localdata: {
+        score: 0,
+        defeatedEnemy: 0,
+        distance: 0
+    },
+    achievements: [],
+    pushLocalToGlobal() {
+        this.globaldata.score += this.localdata.score;
+        this.globaldata.defeatedEnemy += this.localdata.defeatedEnemy;
+        this.globaldata.distance += this.localdata.distance;
+    },
+    async getAchievements() {
+        let result = await request('/achievements', 'GET');
+        this.achievements = result;
+        console.log(result);
     },
     methods: {
         async gameStatistic(score, defeatedEnemy, distance) {

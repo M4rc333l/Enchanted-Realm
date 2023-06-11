@@ -65,15 +65,13 @@ export default {
                         spawnX:0
                     },
                 creationMethod: (context, state, timer) => {
-                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enemy3');
+                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.spawnX, 'enemy3');
                     enemy3.body.setSize(13, 21);
                     context.enemyPool.push(enemy3);
                 },
                 preCreation: (context, state, timer) => {
                     timer.delay = Phaser.Math.Between(2000,10000);
-                    state.spawnSite = Phaser.Math.Between(0,1);
-                    state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = context.cameras.main.scrollX + Phaser.Math.Between(0,320);
                 }
             }
         ]

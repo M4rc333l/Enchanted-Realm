@@ -18,6 +18,8 @@ export default class Stage extends Phaser.Scene {
     }
     init (data)
     {
+        
+        this.cameras.main.fadeIn(1000,255,255,255);
         if(Object.keys(data).length === 0) {
             data = {};
             data.backgroundConfig = {name: 'factory', count:5, bgWidth: 352};
@@ -75,6 +77,8 @@ export default class Stage extends Phaser.Scene {
         //TODO: Basen
         this.load.image('base1', '../../assets/basen/pokemon/base_pokescape.png');
         this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
+        this.load.image('laser', '../../assets/objects/laser.png');
+        this.load.image('lasershot', '../../assets/objects/lasershot.png');
 
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
@@ -83,22 +87,23 @@ export default class Stage extends Phaser.Scene {
         this.load.audio('shoots', '../../assets/audio/shoots.mp3');
         this.load.audio('laserShoot', '../../assets/audio/laserShoot.mp3');
         this.load.audio('pickupItem', '../../assets/audio/pickupItem.wav');
-        this.load.audio('hit', '../../assets/audio/hitHurt.wav');
+        this.load.audio('hit', '../../assets/audio/explosion.wav');
         this.load.audio('Salatsosse', '../../assets/audio/Salatsosse.mp3');
     }
 
     create() {
-        this.cameras.main.fadeIn(1000,255,255,255);
-        var backgroundMusic = this.sound.add('backgroundMusic');
+        
+        console.log(this.ay);
+        this.backgroundMusic = this.sound.add('backgroundMusic');
         var gameOver = this.sound.add('GameOver');
         var shoots = this.sound.add('shoots');
         var lasershoot = this.sound.add('laserShoot');
         var pickupItem = this.sound.add('pickupItem');
         var hit = this.sound.add('hit');
         var Salatsosse = this.sound.add('Salatsosse');
-        backgroundMusic.setLoop(true);
-        backgroundMusic.play();
-        backgroundMusic.volume = 0.5;
+        this.backgroundMusic.setLoop(true);
+        this.backgroundMusic.play();
+        this.backgroundMusic.volume = 0.5;
         this.registry.events.on('shoots', () => {
             if (this.player.shootMaxTick !== 40){
                 lasershoot.play();
@@ -115,15 +120,15 @@ export default class Stage extends Phaser.Scene {
         this.physics.world.checkCollision.left = false;
         this.physics.world.checkCollision.right = false;
 
-        this.player = new Player({scene:this, x:0, y:110, name:'player'});
-        this.cameras.main.startFollow(this.player,false,1,0,0,0)
-
         this.bulletPool = [];
         this.addPushListener(this.bulletPool, this.onBulletCreated);
         this.enemyPool = [];
         this.addPushListener(this.enemyPool, ()=>{});
         this.basePool = [];
         this.addPushListener(this.basePool, ()=>{})
+
+        this.player = new Player({scene:this, x:0, y:110, name:'player'});
+        this.cameras.main.startFollow(this.player,false,1,0,0,0)
 
         this.enemySpawnTick = 0;
 
@@ -253,8 +258,8 @@ export default class Stage extends Phaser.Scene {
         if(!this.endedAnim) {
             this.endedAnim = true;
             this.cameras.main.fadeOut(1000,255,255,255,(cam, progress)=>{ 
-                if(progress == 1) 
-                {
+                if(progress == 1) {
+                    this.backgroundMusic.stop();
                     this.scene.stop();
                     this.scene.restart(stageConfigs.pokescapeConfig);
                 }

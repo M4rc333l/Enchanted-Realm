@@ -5,6 +5,7 @@ import Stage from './scenes/stage.js'
 import Gui from './scenes/gui.js'
 import ParrallaxBackground from './scenes/parrallaxBackground.js'
 import End from './scenes/end.js'
+import se from './objects/soundEngine.js'
 
 Number.prototype.clamp = function(min, max) {
   return Math.min(Math.max(this, min), max);

@@ -7,11 +7,12 @@ export default class LaserGun extends Item {
     }
     collected(){
         this.scene.registry.events.emit('activateItem', 'Laser');
-        this.player.shootMaxTick = 0;
+        this.player.hasLaser = true;
         this.scene.time.addEvent({
             delay: 5000,
             callback: () => {
-                this.player.shootMaxTick = 40;
+                this.player.hasLaser = false;
+                this.player.laser.deactivate();
             }
         });
         this.destroy();

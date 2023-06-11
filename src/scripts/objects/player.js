@@ -1,4 +1,5 @@
 import Bullet from './bullet.js';
+import Laser from './laser.js';
 'use strict';
 
 export default class Player extends Phaser.GameObjects.Sprite {
@@ -22,6 +23,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.distance = 0;
         this.prevPosition = 0;
         this.create();
+
+        this.hasLaser = false;
+
+        this.laser = new Laser({context:config.scene, player:this});
+        this.context.physics.add.existing(this.laser);
+        this.laser.deactivate();
     }
 
     create(){
@@ -37,7 +44,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     update(time, delta){
-
         let a = this.x-this.prevPosition;
         if(a>=0) this.distance += a;
         else this.distance += -a;
@@ -95,22 +101,33 @@ export default class Player extends Phaser.GameObjects.Sprite {
         var pointer2 = this.context.input.pointer2;
 
         if (this.inputKeys.shoot.isDown || (pointer1.isDown & pointer1.x > 150) || (pointer2.isDown & pointer2.x > 150)){
-            this.shootTick-= delta * 0.15;
-            if(this.shootTick < 0) {
-                this.shoot(-2);
-                this.shoot(4);
-                this.shootTick = this.shootMaxTick;
+            if(this.hasLaser == true) {
+                this.laser.activate();
+            } else {            
+                this.shootTick-= delta * 0.15;
+                if(this.shootTick < 0) {
+                    this.shoot(-2);
+                    this.shoot(4);
+                    this.shootTick = this.shootMaxTick;
+                }
             }
         }
         else {
-            this.shootTick = 0;
+            if(this.hasLaser == true) {
+                this.laser.deactivate();
+            } else {     
+                this.shootTick = 0;
+            }
         }
+        
+        this.laser.update();
     }
     getDistance(){
         return this.distance;
     }
     shoot(horizontalOffset = 0) {
-        this.scene.registry.events.emit('shoots');
+        //this.scene.registry.events.emit('shoots');
+        this.context.sound.play("shoots");
         let bullet = new Bullet({scene:this.context, x:8, y:3, name:'bullet_normal'});
         bullet.x = this.x;
         bullet.y = this.y + horizontalOffset;
@@ -118,15 +135,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.context.bulletPool.push(bullet);
     }
     enemyCollision() {
-        this.scene.registry.events.emit('hit');
         if(!this.delay){
             this.delay = true;
             this.life--;
+            this.scene.sound.play('hit');
             this.scene.registry.events.emit('onLifeStateChanged', this.life);
             if(this.life === 0) {
                 this.scene.registry.events.emit('gameOver', this.distance);
                 this.destroy();
                 this.dead = true;
+                this.laser.deactivate();
                 return;
             }
             this.playerBlinking(20);
