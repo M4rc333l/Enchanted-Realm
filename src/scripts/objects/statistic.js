@@ -16,11 +16,55 @@ export default{
         this.globaldata.score += this.localdata.score;
         this.globaldata.defeatedEnemy += this.localdata.defeatedEnemy;
         this.globaldata.distance += this.localdata.distance;
+        this.localdata.score = 0;
+        this.localdata.defeatedEnemy = 0;
+        this.localdata.distance = 0;
     },
-    async getAchievements() {
+    calculateGlobal() {
+        return {
+            score: this.globaldata.score + this.localdata.score,
+            defeatedEnemy: this.globaldata.defeatedEnemy + this.localdata.defeatedEnemy,
+            distance: this.globaldata.distance + this.localdata.distance,
+        }
+    }
+    ,async getAchievements() {
         let result = await request('/achievements', 'GET');
-        this.achievements = result;
-        console.log(result);
+        if(result.status == 200) {
+            this.achievements = result.body;
+            console.log(result.body);
+        }
+    },
+    getSucceededAchievements() {
+        let succeededAchievements = [];
+        let _value = 0;
+        let data = {};
+        for(let achievement of this.achievements) {
+            data = achievement.global == 0 ? this.localdata : this.calculateGlobal();
+            switch(achievement.type) {
+                case "kills": _value = data.defeatedEnemy; break;
+                case "distance": _value = data.distance; break;
+                case "score": _value = data.score; break;
+            }
+            if(_value >= achievement.amount) {
+                succeededAchievements.push(achievement.a_id);
+            }
+        }
+        return succeededAchievements;
+    },
+    async push() {
+        let succeededAchievements = this.getSucceededAchievements();
+        await request('/achievements', 'POST', {achievements:succeededAchievements});
+        this.pushLocalToGlobal();
+
+        let newAchievements = [];
+        for(let achievement of this.achievements) {
+            if(succeededAchievements.includes(achievement.a_id) && achievement.done == 0) {
+                newAchievements.push(achievement);
+                achievement.done = 1;
+            }
+        }
+        
+        return newAchievements;
     },
     methods: {
         async gameStatistic(score, defeatedEnemy, distance) {
