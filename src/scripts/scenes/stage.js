@@ -150,10 +150,11 @@ export default class Stage extends Phaser.Scene {
             }
         });
 
-        this.registry.events.on('gameOver', async(distance) => {
+        this.registry.events.on('gameOver', (distance) => {
             this.registry.events.removeAllListeners();
-            await Statistic.methods.gameStatistic(this.points, this.defeatedEnemy, distance);
-            this.scene.stop('Gui');
+            //await Statistic.methods.gameStatistic(this.points, this.defeatedEnemy, distance);
+            this.scene.stop('Gui'); 
+            console.log("EY");
             this.scene.launch('End');
         });
 
@@ -293,6 +294,7 @@ export default class Stage extends Phaser.Scene {
     removeEnemy(enemy) {
         enemy.destroy();
         this.addPoints(10);
+        Statistic.localdata.defeatedEnemy += 1;
     }
 
     removeBase(base) {
