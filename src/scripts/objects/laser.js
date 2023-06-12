@@ -33,11 +33,15 @@ export default class Laser extends Phaser.GameObjects.Sprite {
     }
 
     activate() {
-        this.body.enable = true;
+        if(!this.body.enable) {
+            this.body.enable = true;
+            this.context.laserSound.play();
+        }
     }
     deactivate() {
         this.body.enable = false;
         this.laserImage.alpha = 0;
+        this.context.laserSound.stop();
     }
 
     getNearest() {

@@ -19,10 +19,15 @@ export default {
   mounted() {
     this.initGame();
   },
+  data() {
+    return {
+      game: null
+    }
+  },
   methods: {
     initGame: function() {
         config.canvas = this.$refs.phaser_game;
-        new Phaser.Game(config); 
+        this.game = new Phaser.Game(config); 
     },
     openFullscreen: function() {
     var elem = document.documentElement;
@@ -63,6 +68,9 @@ export default {
     navigateBack() {
       this.$router.push("/login");
       request("/logout","GET");
+      if(this.game!=null) {
+        this.game.destroy();
+      }
     }
   }
 }

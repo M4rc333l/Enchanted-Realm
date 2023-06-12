@@ -5,12 +5,14 @@ import Base from '../objects/base/base';
 export default class ParrallaxBackground extends Phaser.Scene {
     constructor() {
         super({ key: 'Background' });
+        this.ticker = 0;
     }
 
     init(data) {
         this.name = data.config.name;
         this.count = data.config.count;
         this.bgWidth = data.config.bgWidth;
+        this.autoScroll = data.config.autoScroll;
         this.imageNames = [];
 
         for (let i = 0; i < this.count; i++) {
@@ -19,7 +21,6 @@ export default class ParrallaxBackground extends Phaser.Scene {
         }
 
         this.scales = [0, 0.2, 0.4, 0.6, 1, 0.9, 1, 1, 1, 1, 1, 1];
-
         this.scene.moveDown();
     }
 
@@ -61,6 +62,11 @@ export default class ParrallaxBackground extends Phaser.Scene {
     }
 
     update() {
+        if(this.autoScroll) {
+            this.ticker+=0.001;
+            this.updatePosition(Math.sin(this.ticker)*500);
+        }
+
         for (let i = 0; i < this.imageNames.length; i++) {
             for(let j = 0; j < 4; j++) {            
                 //this.backgrounds[i].x = (Math.floor(position / this.bgWidth) * this.bgWidth + (-this.scales[i] * position * this.depth) % this.bgWidth) - this.bgWidth;
@@ -70,7 +76,9 @@ export default class ParrallaxBackground extends Phaser.Scene {
                 this.backgrounds[i][j].x = ((segment*this.bgWidth) -(this.position * this.scales[i])) + j * this.bgWidth
                 this.backgrounds[i][j].x = Math.floor(this.backgrounds[i][j].x);
             }
-        }
+        }  
+        
+
     }
     translate(x) {
 

@@ -8,8 +8,9 @@ export default class Menu extends Phaser.Scene {
         super({key: 'Menu'});
     }
     init() {
-        this.scene.launch('Background',{config: {name: 'pokescape', count:5, bgWidth:320}});
+        this.scene.launch('Background',{config: {name: 'pokescape', count:5, bgWidth:320, autoScroll: true}});
         this.scene.bringToTop();
+        this.ticker = 0;
     }
     preload(){
     }
@@ -47,7 +48,8 @@ export default class Menu extends Phaser.Scene {
                     targets: this.startLogo,
                     y: -200,
                     onComplete: () => {
-                        this.scene.start('Stage', stageConfigs.hellscapeConfig)
+                        this.scene.start('Stage', stageConfigs.levels()[0])
+                        this.scene.launch('Gui', {playerLifes:this.playerLifes, points:this.points});
                         this.scene.stop('Background');
                     }
                 });
@@ -62,19 +64,25 @@ export default class Menu extends Phaser.Scene {
                     }
                 });
             });
+            this.achievementsLogo.visible = false;
 
-        this.ticker = 0;
-
-        request("/highscore","GET").then((result)=>{
-            if(result.status == 200) {
-                this.highscore = result.body.highscore == null ? 'Keinen' : result.body.highscore;
-                this.defeatedEnemies = result.body.defeatedEnemy;
-                this.username = result.body.username;
-                this.info.text = `Hallo, ${this.username}!\nHighscore: ${this.highscore}\nEliminierte Gegner: ${this.defeatedEnemies}`;
+            if(statistic.initialized == false) {
+                request("/highscore","GET").then((result)=>{
+                    if(result.status == 200) {
+                        this.highscore = result.body.highscore == null ? 'Keinen' : result.body.highscore;
+                        this.defeatedEnemies = result.body.defeatedEnemy;
+                        this.username = result.body.username;
+                        this.info.text = `Hallo, ${this.username}!\nHighscore: ${this.highscore}\nEliminierte Gegner: ${this.defeatedEnemies}`;
+                        this.achievementsLogo.visible = true;
+                        statistic.initialized = true;
+                        statistic.username = this.username;
+                    } else {
+                        this.info.text = `Hallo, Gast!\nViel Spaß beim Spiel`;
+                    }})
             } else {
-                this.info.text = `Hallo, Gast!\nViel Spaß beim Spiel`;
+                this.info.text = `Hallo, ${statistic.username}!\nHighscore: ${statistic.highscore}\nEliminierte Gegner: ${statistic.globaldata.defeatedEnemy}`;
             }
-        })
+
 
     }
     startButtonHover(style){
@@ -85,9 +93,6 @@ export default class Menu extends Phaser.Scene {
     }
     update() {
         this.ticker+=0.001;
-        try {
-            this.scene.get('Background').updatePosition(Math.sin(this.ticker)*500);
-        } catch {}
         this.info.y = this.cy - 50 + Math.sin(this.ticker*15)*5; 
     }
 }

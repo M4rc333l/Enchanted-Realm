@@ -25,8 +25,10 @@ export default class Stage extends Phaser.Scene {
             data.backgroundConfig = {name: 'factory', count:5, bgWidth: 352};
             data.factoryPattern = {};
         }
+        this.playerLifes = data.playerLifes == undefined ? 3 : data.playerLifes;
+        this.points = data.points == undefined ? 0 : data.points;
+        this.stageIndex = data.points == undefined ? 0 : data.stageIndex;
 
-        this.scene.launch('Gui');
         this.scene.launch('Background',{config: data.backgroundConfig});
 
         this.bg = this.scene.get('Background');
@@ -38,7 +40,6 @@ export default class Stage extends Phaser.Scene {
         this.cameraOffset = 0
         this.aestheticOffset = 0;
 
-        this.points = 0;
         this.defeatedEnemy = 0;
 
         this.states = {
@@ -50,7 +51,6 @@ export default class Stage extends Phaser.Scene {
         this.endedAnim = undefined;
         this.state = 0;
         this.factory = new Factory({context:this, pattern:data.factoryPattern});
-
     }
     preload() {
         //TODO: Player
@@ -85,34 +85,22 @@ export default class Stage extends Phaser.Scene {
         this.load.audio('backgroundMusic', '../../assets/audio/Level1.mp3');
         this.load.audio('GameOver', '../../assets/audio/GameOver.mp3');
         this.load.audio('shoots', '../../assets/audio/shoots.mp3');
-        this.load.audio('laserShoot', '../../assets/audio/laserShoot.mp3');
         this.load.audio('pickupItem', '../../assets/audio/pickupItem.wav');
         this.load.audio('hit', '../../assets/audio/explosion.wav');
         this.load.audio('Salatsosse', '../../assets/audio/Salatsosse.mp3');
+        this.load.audio('laserSound', '../../assets/audio/synth.wav');
+        this.load.audio('enemyExplosion', '../../assets/audio/enemyExplosion.wav');
     }
 
     create() {
-        
-        console.log(this.ay);
         this.backgroundMusic = this.sound.add('backgroundMusic');
-        var gameOver = this.sound.add('GameOver');
-        var shoots = this.sound.add('shoots');
-        var lasershoot = this.sound.add('laserShoot');
-        var pickupItem = this.sound.add('pickupItem');
         var hit = this.sound.add('hit');
-        var Salatsosse = this.sound.add('Salatsosse');
+        this.laserSound = this.sound.add('laserSound', {loop:true, volume:0.7})
         this.backgroundMusic.setLoop(true);
         this.backgroundMusic.play();
         this.backgroundMusic.volume = 0.5;
-        this.registry.events.on('shoots', () => {
-            if (this.player.shootMaxTick !== 40){
-                lasershoot.play();
-            }
-            else {
-                shoots.play();
-            }
 
-        });
+    
         this.registry.events.on('hit', () => {
             hit.play();
         });
@@ -126,8 +114,9 @@ export default class Stage extends Phaser.Scene {
         this.addPushListener(this.enemyPool, ()=>{});
         this.basePool = [];
         this.addPushListener(this.basePool, ()=>{})
+        
+        this.player = new Player({scene:this, x:0, y:110, name:'player', life: this.playerLifes});
 
-        this.player = new Player({scene:this, x:0, y:110, name:'player'});
         this.cameras.main.startFollow(this.player,false,1,0,0,0)
 
         this.enemySpawnTick = 0;
@@ -140,6 +129,7 @@ export default class Stage extends Phaser.Scene {
         this.itemDelay = false;
         this.physics.add.overlap(this.player, this.itemPool, () => {
             this.itemPool[0].collected();
+            this.sound.play("pickupItem");
         })
 
 
@@ -151,11 +141,13 @@ export default class Stage extends Phaser.Scene {
         });
 
         this.registry.events.on('gameOver', (distance) => {
+            this.sound.play("GameOver");
             this.registry.events.removeAllListeners();
-            //await Statistic.methods.gameStatistic(this.points, this.defeatedEnemy, distance);
+            this.backgroundMusic.stop();
+            this.laserSound.stop();
             this.scene.stop('Gui'); 
-            console.log("EY");
             this.scene.launch('End');
+            Statistic.push();
         });
 
         this.factory.create();
@@ -177,6 +169,8 @@ export default class Stage extends Phaser.Scene {
             this.joyStick.force = 0;
             this.joyStick.angle = 0;
         }
+
+        this.registry.events.emit('onBaseStateChanged', this.basePool);
     }
 
     itemSpawn(){
@@ -186,6 +180,7 @@ export default class Stage extends Phaser.Scene {
             this.itemPool.pop();
         }
         let randomItem = Math.random();
+        randomItem=0.5
         let sItem = null;
         if(randomItem>=0 && randomItem<0.4){
             sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'speed');
@@ -261,12 +256,24 @@ export default class Stage extends Phaser.Scene {
             this.cameras.main.fadeOut(1000,255,255,255,(cam, progress)=>{ 
                 if(progress == 1) {
                     this.backgroundMusic.stop();
-                    this.scene.stop();
-                    this.scene.restart(stageConfigs.pokescapeConfig);
+                    this.laserSound.stop();
+                    this.scene.stop(); 
+
+                    if(stageConfigs.levels().length == this.stageIndex+1) {
+                        this.registry.events.removeAllListeners();
+                        this.scene.stop("Background");
+                        this.scene.stop("Gui");
+                        this.scene.start("Menu");
+                    } else {
+                        let config = stageConfigs.levels()[this.stageIndex+1];
+                        config.playerLifes = this.player.life;
+                        config.points = this.points;
+                        config.stageIndex = this.stageIndex + 1;
+                        this.scene.restart(config);
+                    }
+                    Statistic.push();
                 }
             });
-            
-        console.log("END");
         }
             
     }
@@ -294,6 +301,7 @@ export default class Stage extends Phaser.Scene {
     removeEnemy(enemy) {
         enemy.destroy();
         this.addPoints(10);
+        this.sound.play('enemyExplosion');
         Statistic.localdata.defeatedEnemy += 1;
     }
 

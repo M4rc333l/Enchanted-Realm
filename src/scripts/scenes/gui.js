@@ -3,8 +3,10 @@ export default class Gui extends Phaser.Scene {
     constructor() {
         super({key: 'Gui'});
     }
-    init (){
+    init (data){
         this.scene.moveUp();
+        this.points = data.points == undefined ? 0 : data.points;
+        this.playerLifes = data.playerLifes == undefined ? 3 : data.playerLifes;
     }
     preload(){
         this.load.image('heart_red', '../../assets/objects/heart_red.png')
@@ -26,7 +28,7 @@ export default class Gui extends Phaser.Scene {
 
         this.heartGroup = this.add.group({
             key: 'heart_red',
-            repeat: 2,
+            repeat: this.playerLifes - 1,
             setXY: {
                 x: 20,
                 y: 20,
@@ -54,7 +56,7 @@ export default class Gui extends Phaser.Scene {
             }
         })*/
 
-        this.pointLabel = this.add.text(280, 10, 0);
+        this.pointLabel = this.add.text(280, 10, this.points);
 
         this.itemLabel = this.add.text(120, 10, "Item: ");
 

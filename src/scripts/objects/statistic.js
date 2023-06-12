@@ -1,6 +1,9 @@
 import request from '../../scripts/request.js';
 
 export default{
+    initialized: false,
+    username: '',
+    highscore: 0,
     globaldata: {
         score: 0,
         defeatedEnemy: 0,
@@ -53,7 +56,7 @@ export default{
     },
     async push() {
         let succeededAchievements = this.getSucceededAchievements();
-        await request('/achievements', 'POST', {achievements:succeededAchievements});
+        await request('/achievements', 'POST', {achievements:succeededAchievements.join(",")});
         this.pushLocalToGlobal();
 
         let newAchievements = [];

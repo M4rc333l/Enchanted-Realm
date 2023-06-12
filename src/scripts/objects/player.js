@@ -15,7 +15,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.shootTick = 0;
         this.playerVelocity = new Phaser.Math.Vector2();
         this.depth = 1;
-        this.life = 3;
+        this.life = config.life == undefined ? 3 : config.life;
         this.maxLife = 3;
         this._x = config.x;
         this._y = config.y;
