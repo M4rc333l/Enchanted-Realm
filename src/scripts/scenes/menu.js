@@ -28,19 +28,36 @@ export default class Menu extends Phaser.Scene {
         this.startLogo = this.add.text(this.cx, this.cy + 10, "Start",
             { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
             .setInteractive().setOrigin(0.5)
-            .on('pointerover', () => this.buttonHover('blue'))
-            .on('pointerout', () => this.buttonHover('white'));
+            .on('pointerover', () => this.startButtonHover('blue'))
+            .on('pointerout', () => this.startButtonHover('white'));
 
-        this.startLogo.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.add.tween({
-                targets: this.startLogo,
-                y: -200,
-                onComplete: () => {
-                    this.scene.start('Stage', stageConfigs.hellscapeConfig)
-                    this.scene.stop('Background');
-                }
+        this.achievementsLogo = this.add.text(this.cx, this.cy + 40, "Achievements",
+            { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
+            .setInteractive().setOrigin(0.5)
+            .on('pointerover', () => this.achievementsButtonHover('blue'))
+            .on('pointerout', () => this.achievementsButtonHover('white'));
+
+            this.startLogo.on(Phaser.Input.Events.POINTER_DOWN, () => {
+                this.add.tween({
+                    targets: this.startLogo,
+                    y: -200,
+                    onComplete: () => {
+                        this.scene.start('Stage', stageConfigs.hellscapeConfig)
+                        this.scene.stop('Background');
+                    }
+                });
             });
-        });
+
+            this.achievementsLogo.on(Phaser.Input.Events.POINTER_DOWN, () => {
+                this.add.tween({
+                    targets: this.achievementsLogo,
+                    y: +400,
+                    onComplete: () => {
+                        this.scene.start('AchievementsView')
+                    }
+                });
+            });
+
         this.ticker = 0;
 
         request("/highscore","GET").then((result)=>{
@@ -55,8 +72,11 @@ export default class Menu extends Phaser.Scene {
         })
 
     }
-    buttonHover(style){
+    startButtonHover(style){
         this.startLogo.setStyle({ fill: style});
+    }
+    achievementsButtonHover(style){
+        this.achievementsLogo.setStyle({ fill: style});
     }
     update() {
         this.ticker+=0.001;

@@ -1,5 +1,7 @@
 import Bullet from './bullet.js';
 import Laser from './laser.js';
+import Statistics from './statistic.js';
+
 'use strict';
 
 export default class Player extends Phaser.GameObjects.Sprite {
@@ -121,6 +123,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
         
         this.laser.update();
+
+        Statistics.localdata.distance += Math.abs(this._playerVelocity.x);
     }
     getDistance(){
         return this.distance;
@@ -141,7 +145,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.scene.sound.play('hit');
             this.scene.registry.events.emit('onLifeStateChanged', this.life);
             if(this.life === 0) {
-                this.scene.registry.events.emit('gameOver', this.distance);
+                this.context.registry.events.emit('gameOver', this.distance);
                 this.destroy();
                 this.dead = true;
                 this.laser.deactivate();
