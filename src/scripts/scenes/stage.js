@@ -53,35 +53,47 @@ export default class Stage extends Phaser.Scene {
         this.factory = new Factory({context:this, pattern:data.factoryPattern});
     }
     preload() {
-        //TODO: Player
+        //Player
         this.load.image('player', '../../assets/objects/player.png');
 
-        //TODO: Waffen & Bullets
+        //Waffen & Bullets
         this.load.image('item', '../../assets/objects/lasergun.png');
         this.load.image('bullet_normal', '../../assets/objects/lasergun_bullet.png');
 
-        //TODO: Gegner
+        //Gegner Pokescape
+        this.load.image('enPoke1', '../../assets/enemy/pokemon/pokescape_en_01.png');
+        this.load.image('enPoke2', '../../assets/enemy/pokemon/pokescape_en_02.png');
+        this.load.image('enPoke3', '../../assets/enemy/pokemon/pokescape_en_03.png');
+
+        //Gegner Marioland
+        this.load.image('enMario1', '../../assets/enemy/marioland/marioland_en_01.png');
+        this.load.image('enMario2', '../../assets/enemy/marioland/marioland_en_02.png');
+        this.load.image('enMario3', '../../assets/enemy/marioland/marioland_en_03.png');
+
+        //Gegner Hellscape
         this.load.image('enemy', '../../assets/enemy/hellscape/hellscape_en_01.png');
         this.load.image('enemy2', '../../assets/enemy/hellscape/hellscape_en_02.png');
         this.load.image('enemy3', '../../assets/enemy/hellscape/hellscape_en_03.png');
 
-        //TODO: Bosse & Bullets
+        //Bosse & Bullets
         this.load.image('boss1', '../../assets/enemy/pokemon/glumanda.png');
         this.load.image('boss2', '../../assets/enemy/hellscape/boss_isaac.png');
         this.load.image('bossBullet2', '../../assets/enemy/hellscape/bullet_isaac_boss.png');
 
-        //TODO: Objekte
+        //Objekte
         this.load.image('speed', '../../assets/objects/speed.png');
         this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
-        //TODO: Basen
+        //Basen
         this.load.image('base1', '../../assets/basen/pokemon/base_pokescape.png');
         this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
         this.load.image('laser', '../../assets/objects/laser.png');
         this.load.image('lasershot', '../../assets/objects/lasershot.png');
 
+        //Plugin
         this.load.plugin('rexvirtualjoystickplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js', true);
 
+        //Audio-Files
         this.load.audio('backgroundMusic', '../../assets/audio/Level1.mp3');
         this.load.audio('GameOver', '../../assets/audio/GameOver.mp3');
         this.load.audio('shoots', '../../assets/audio/shoots.mp3');
