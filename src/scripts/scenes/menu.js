@@ -18,8 +18,6 @@ export default class Menu extends Phaser.Scene {
         this.cx = this.cameras.main.worldView.x + this.cameras.main.width/2;
         this.cy = this.cameras.main.worldView.y + this.cameras.main.height/2;
 
-        statistic.localdata.defeatedEnemy = 10;
-
         statistic.getAchievements().then(()=>{
             console.log(statistic.getSucceededAchievements());
         });
@@ -66,7 +64,6 @@ export default class Menu extends Phaser.Scene {
             });
             this.achievementsLogo.visible = false;
 
-            if(statistic.initialized == false) {
                 request("/highscore","GET").then((result)=>{
                     if(result.status == 200) {
                         this.highscore = result.body.highscore == null ? 'Keinen' : result.body.highscore;
@@ -79,9 +76,6 @@ export default class Menu extends Phaser.Scene {
                     } else {
                         this.info.text = `Hallo, Gast!\nViel Spaß beim Spiel`;
                     }})
-            } else {
-                this.info.text = `Hallo, ${statistic.username}!\nHighscore: ${statistic.highscore}\nEliminierte Gegner: ${statistic.globaldata.defeatedEnemy}`;
-            }
 
 
     }

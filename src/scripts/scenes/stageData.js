@@ -65,7 +65,7 @@ export default {
                         spawnX:0
                     },
                 creationMethod: (context, state, timer) => {
-                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enemy3');
+                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.randomY, 'enemy3');
                     enemy3.body.setSize(13, 21);
                     context.enemyPool.push(enemy3);
                 },

@@ -55,6 +55,7 @@ export default{
         return succeededAchievements;
     },
     async push() {
+        await this.gameStatistic(this.localdata.score, this.localdata.defeatedEnemy, this.localdata.distance);
         let succeededAchievements = this.getSucceededAchievements();
         await request('/achievements', 'POST', {achievements:succeededAchievements.join(",")});
         this.pushLocalToGlobal();
@@ -69,13 +70,11 @@ export default{
         
         return newAchievements;
     },
-    methods: {
-        async gameStatistic(score, defeatedEnemy, distance) {
-            let result = await request('/gameStatistic', 'POST', {score:score,
-                defeatedEnemy:defeatedEnemy, distance:distance});
-            if(result.status !== 200) {
-                this.message = result.body.msg;
-            }
+    async gameStatistic(score, defeatedEnemy, distance) {
+        let result = await request('/gameStatistic', 'POST', {score:score,
+            defeatedEnemy:defeatedEnemy, distance:distance});
+        if(result.status !== 200) {
+            this.message = result.body.msg;
         }
     }
 }
