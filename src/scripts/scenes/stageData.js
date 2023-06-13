@@ -21,7 +21,7 @@ export default {
                     spawnX:0
                 },
                 creationMethod: (context, state, timer) => {
-                    let en = new FireEnemy({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, 'enemy');
+                    let en = new FireEnemy({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, 'enPoke1');
                     en.body.setSize(20, 30);
                     context.enemyPool.push(en);
                 },
@@ -43,7 +43,7 @@ export default {
                     spawnX:0
                 },
                 creationMethod: (context, state, timer) => {
-                    let isaac = new Isaac({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enemy2');
+                    let isaac = new Isaac({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enPoke2');
                     isaac.body.setSize(20, 30);
                     context.enemyPool.push(isaac);
                 },
@@ -65,7 +65,7 @@ export default {
                         spawnX:0
                     },
                 creationMethod: (context, state, timer) => {
-                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.randomY, 'enemy3');
+                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enPoke3');
                     enemy3.body.setSize(13, 21);
                     context.enemyPool.push(enemy3);
                 },
@@ -76,7 +76,10 @@ export default {
                     state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
                 }
             }
-        ]
+        ],
+        bossSpawn() {
+
+        }
     },
     marioLand: {
         backgroundConfig:{
@@ -96,7 +99,7 @@ export default {
                     spawnX:0
                 },
                 creationMethod: (context, state, timer) => {
-                    let en = new FireEnemy({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, 'enemy');
+                    let en = new FireEnemy({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, 'enMario1');
                     en.body.setSize(20, 30);
                     context.enemyPool.push(en);
                 },
@@ -118,7 +121,7 @@ export default {
                     spawnX:0
                 },
                 creationMethod: (context, state, timer) => {
-                    let isaac = new Isaac({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enemy2');
+                    let isaac = new Isaac({scene: context, x: state.spawnX, y: state.randomY}, state.spawnSite, state.randomY, 'enMario2');
                     isaac.body.setSize(20, 30);
                     context.enemyPool.push(isaac);
                 },
@@ -140,7 +143,7 @@ export default {
                         spawnX:0
                     },
                 creationMethod: (context, state, timer) => {
-                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.spawnX, 'enemy3');
+                    let enemy3 = new Enemy3({scene: context, x: state.spawnX, y: state.randomY}, state.spawnX, 'enMario3');
                     enemy3.body.setSize(13, 21);
                     context.enemyPool.push(enemy3);
                 },
