@@ -37,7 +37,7 @@ export default class HistoryView extends Phaser.Scene {
                 this.score3 = result.body.score3;
                 this.score4 = result.body.score4;
                 this.score5 = result.body.score5;
-                this.infoText.text = `Game1: ${this.score1}\nGame2: ${this.score2}\nGame3: ${this.score3}\nGame4: ${this.score4}\nGame5: ${this.score5}`;
+                this.infoText.text = `Game 1: ${this.score1}\nGame 2: ${this.score2}\nGame 3: ${this.score3}\nGame 4: ${this.score4}\nGame 5: ${this.score5}`;
                 statistic.initialized = true;
             }})
     }
