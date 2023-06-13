@@ -135,7 +135,7 @@ export default class Stage extends Phaser.Scene {
 
         this.registry.events.on('enemyDestroyed', () => {
             //WK für das Spawnen eines Items
-            if(!this.itemDelay && Math.random() < 1) {
+            if(!this.itemDelay && Math.random() < 0.25) {
                 this.itemSpawn();
             }
         });
@@ -180,7 +180,6 @@ export default class Stage extends Phaser.Scene {
             this.itemPool.pop();
         }
         let randomItem = Math.random();
-        randomItem=0.5
         let sItem = null;
         if(randomItem>=0 && randomItem<0.4){
             sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'speed');
@@ -291,7 +290,7 @@ export default class Stage extends Phaser.Scene {
             enemy.takeDamage(30);
         });
         context.time.addEvent({
-            delay: 5000,
+            delay: 1500,
             callback: () => {
                 Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
             }
@@ -332,6 +331,7 @@ export default class Stage extends Phaser.Scene {
     addPoints(points) {
         this.points += points;
         this.defeatedEnemy += 1;
+        Statistic.localdata.score += points;
         this.registry.events.emit('onPointsChanged', this.points);
     }
 
