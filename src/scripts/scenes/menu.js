@@ -80,14 +80,16 @@ export default class Menu extends Phaser.Scene {
         });
 
             this.achievementsLogo.visible = false;
+            this.history.visible = false;
 
-                request("/highscore","GET").then((result)=>{
+        request("/highscore","GET").then((result)=>{
                     if(result.status == 200) {
                         this.highscore = result.body.highscore == null ? 'Keinen' : result.body.highscore;
                         this.defeatedEnemies = result.body.defeatedEnemy;
                         this.username = result.body.username;
                         this.info.text = `Hallo, ${this.username}!\nHighscore: ${this.highscore}\nEliminierte Gegner: ${this.defeatedEnemies}`;
                         this.achievementsLogo.visible = true;
+                        this.history.visible = true;
                         statistic.initialized = true;
                         statistic.username = this.username;
                     } else {
