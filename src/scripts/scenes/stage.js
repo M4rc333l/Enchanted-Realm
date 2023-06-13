@@ -290,7 +290,7 @@ export default class Stage extends Phaser.Scene {
             enemy.takeDamage(30);
         });
         context.time.addEvent({
-            delay: 1500,
+            delay: 300,
             callback: () => {
                 Phaser.GameObjects.Sprite.prototype.destroy.call(bullet);
             }
