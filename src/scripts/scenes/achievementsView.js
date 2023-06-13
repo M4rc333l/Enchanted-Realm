@@ -26,9 +26,9 @@ export default class AchievementsView extends Phaser.Scene {
         .on('pointerover', (e) => this.buttonHover(this.leftPageButton,'blue'))
         .on('pointerout', (e) => this.buttonHover(this.leftPageButton,'white'))
         .on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.page++;
-            if(this.page > this.maxPage) {
-                this.page = 0;
+            this.page--;
+            if(this.page < 0) {
+                this.page = this.maxPage;
             }
             this.selectPage(this.page);
         });
@@ -39,9 +39,9 @@ export default class AchievementsView extends Phaser.Scene {
         .on('pointerover', (e) => this.buttonHover(this.rightPageButton,'blue'))
         .on('pointerout', (e) => this.buttonHover(this.rightPageButton,'white'))
         .on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.page--;
-            if(this.page < 0) {
-                this.page = this.maxPage;
+            this.page++;
+            if(this.page > this.maxPage) {
+                this.page = 0;
             }
             this.selectPage(this.page);
         });
