@@ -41,6 +41,12 @@ export default class Menu extends Phaser.Scene {
             .on('pointerover', () => this.achievementsButtonHover('blue'))
             .on('pointerout', () => this.achievementsButtonHover('white'));
 
+        this.history = this.add.text(this.cx, this.cy + 70, "History",
+            { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
+            .setInteractive().setOrigin(0.5)
+            .on('pointerover', () => this.historyButtonHover('blue'))
+            .on('pointerout', () => this.historyButtonHover('white'));
+
             this.startLogo.on(Phaser.Input.Events.POINTER_DOWN, () => {
                 this.add.tween({
                     targets: this.startLogo,
@@ -62,6 +68,17 @@ export default class Menu extends Phaser.Scene {
                     }
                 });
             });
+
+        this.history.on(Phaser.Input.Events.POINTER_DOWN, () => {
+            this.add.tween({
+                targets: this.history,
+                y: +400,
+                onComplete: () => {
+                    this.scene.start('HistoryView')
+                }
+            });
+        });
+
             this.achievementsLogo.visible = false;
 
                 request("/highscore","GET").then((result)=>{
@@ -77,13 +94,15 @@ export default class Menu extends Phaser.Scene {
                         this.info.text = `Hallo, Gast!\nViel Spaß beim Spiel`;
                     }})
 
-
     }
     startButtonHover(style){
         this.startLogo.setStyle({ fill: style});
     }
     achievementsButtonHover(style){
         this.achievementsLogo.setStyle({ fill: style});
+    }
+    historyButtonHover(style){
+        this.history.setStyle({ fill: style});
     }
     update() {
         this.ticker+=0.001;

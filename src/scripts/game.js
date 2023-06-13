@@ -7,6 +7,7 @@ import ParrallaxBackground from './scenes/parrallaxBackground.js'
 import End from './scenes/end.js'
 import se from './objects/soundEngine.js'
 import AchievementsView from './scenes/achievementsView.js';
+import HistoryView from './scenes/historyView.js';
 
 Number.prototype.clamp = function(min, max) {
   return Math.min(Math.max(this, min), max);
@@ -35,7 +36,8 @@ var config = {
         Gui,
         ParrallaxBackground,
         End,
-        AchievementsView
+        AchievementsView,
+        HistoryView
     ]
 };
 
