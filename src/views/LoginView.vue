@@ -42,7 +42,8 @@ export default {
     },
     methods: {
         async login() {
-            let result = await request('/login', 'POST', {username:this.username, password:this.password});
+          await request('/logout', 'GET');
+          let result = await request('/login', 'POST', {username:this.username, password:this.password});
             if(result.status != 200) {
                 this.message = result.body.msg;
             } else {

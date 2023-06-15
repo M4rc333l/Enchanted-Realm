@@ -44,6 +44,8 @@ export default {
     methods: {
         async register() {
 
+          await request('/logout', 'GET');
+
             if(this.password != this.passwordRepeat) {
                 this.message = 'Die Passwörter stimmen nicht überein.';
                 return;
