@@ -46,16 +46,6 @@ export default class Gui extends Phaser.Scene {
             }
         })
 
-        /*this.life1 = this.add.group({
-            key: 'heart_red',
-            repeat: 1,
-            setXY: {
-                x: 20,
-                y: 200,
-                stepX: 25
-            }
-        })*/
-
         this.pointLabel = this.add.text(280, 10, this.points);
 
         this.itemLabel = this.add.text(120, 10, "Item: ");
@@ -65,7 +55,7 @@ export default class Gui extends Phaser.Scene {
         });
 
         this.registry.events.on('activateItem', (preview) => {
-            this.itemLabel.setText(this.itemLabel.text+preview);
+            this.itemLabel.setText("Item: "+preview);
             this.time.addEvent({
                 delay: 5000,
                 callback: () => {
@@ -87,8 +77,4 @@ export default class Gui extends Phaser.Scene {
             }
         });
     }
-
-
-    
-
 }
