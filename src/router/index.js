@@ -14,6 +14,11 @@ const routes = [
     name: 'register',
     component: RegisterView
   },{
+    path: '/',
+    name: 'register2',
+    component: RegisterView
+  },
+  {
     path: '/game',
     name: 'game',
     component: GameView
