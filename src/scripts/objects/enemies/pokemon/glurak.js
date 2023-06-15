@@ -4,7 +4,7 @@ import BossBullet from "@/scripts/objects/bossBullet";
 
 export default class Glurak extends Enemy {
 
-    constructor(config, image) {
+    constructor(config, image, bulletImage) {
         super(config, image);    
         this._x = config.x;
         this._y = config.y;
@@ -16,6 +16,7 @@ export default class Glurak extends Enemy {
 
         this.mode = this.modes.Wave;
         this.randomHeight = 100;
+        this.bulletImage = bulletImage;
 
         this.context.time.addEvent({
             delay: 1400,
@@ -36,7 +37,7 @@ export default class Glurak extends Enemy {
         var timer = this.context.time.addEvent({
             delay: 500,
             callback: ()=>{
-                let bossBullet = new BossBullet({scene:this.context, x: this._x, y: this._y}, 'bossBullet2', this._x, this.y);
+                let bossBullet = new BossBullet({scene:this.context, x: this._x, y: this._y}, this.bulletImage, this._x, this.y);
                 this.context.enemyPool.push(bossBullet);},
             loop: true
         });

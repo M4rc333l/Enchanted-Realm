@@ -1,6 +1,7 @@
 import Isaac from "../objects/enemies/hellscape/isaac";
 import Enemy3 from "../objects/enemies/hellscape/enemy3";
 import FireEnemy from '../objects/enemies/hellscape/fireenemy';
+import Glurak from "../objects/enemies/pokemon/glurak";
 
 export default {
     pokescapeConfig: {
@@ -77,9 +78,15 @@ export default {
                 }
             }
         ],
-        bossSpawn() {
-
-        }
+        bossSpawn(context) {
+            let __x = context.cameras.main.scrollX + 400;
+            let __y = 100;
+            context.bossSpawned = true;
+            context.boss = new Glurak({ scene: context, x: __x, y: __y }, 'boss1','bossBullet1');
+            context.boss.body.setSize(114, 80);
+            context.enemyPool.push(context.boss);
+        },
+        baseImage: 'base1'
     },
     marioLand: {
         backgroundConfig:{
@@ -152,7 +159,16 @@ export default {
                     state.spawnX = context.cameras.main.scrollX + Phaser.Math.Between(0,320);
                 }
             }
-        ]
+        ],
+        bossSpawn(context) {
+            let __x = context.cameras.main.scrollX + 400;
+            let __y = 100;
+            context.bossSpawned = true;
+            context.boss = new Glurak({ scene: context, x: __x, y: __y }, 'boss2','bossBullet2');
+            context.boss.body.setSize(114, 80);
+            context.enemyPool.push(context.boss);
+        },
+        baseImage: 'base2'
     },
     hellscapeConfig: {
         backgroundConfig:{
@@ -225,7 +241,16 @@ export default {
                     state.spawnX = context.cameras.main.scrollX + Phaser.Math.Between(0,320);
                 }
             }
-        ]
+        ],
+        bossSpawn(context) {
+            let __x = context.cameras.main.scrollX + 400;
+            let __y = 100;
+            context.bossSpawned = true;
+            context.boss = new Glurak({ scene: context, x: __x, y: __y }, 'boss3','bossBullet3');
+            context.boss.body.setSize(114, 80);
+            context.enemyPool.push(context.boss);
+        },
+        baseImage: 'base3'
     },
     levels() {return [this.pokescapeConfig, this.marioLand, this.hellscapeConfig]},
 }

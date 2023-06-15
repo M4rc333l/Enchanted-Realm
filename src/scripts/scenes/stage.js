@@ -4,7 +4,6 @@ import Player from '../objects/player';
 import Enemy from "../objects/enemy";
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
-import Glurak from "../objects/enemies/pokemon/glurak";
 import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
 import ProtectionItem from "@/scripts/objects/items/protectionItem";
@@ -24,10 +23,15 @@ export default class Stage extends Phaser.Scene {
             data = {};
             data.backgroundConfig = {name: 'factory', count:5, bgWidth: 352};
             data.factoryPattern = {};
+            data.bossSpawn = (context) => {};
+            data.baseImage = "base_pokescape";
         }
         this.playerLifes = data.playerLifes == undefined ? 3 : data.playerLifes;
         this.points = data.points == undefined ? 0 : data.points;
         this.stageIndex = data.points == undefined ? 0 : data.stageIndex;
+
+        this.bossSpawn = data.bossSpawn;
+        this.baseImage = data.baseImage;
 
         this.scene.launch('Background',{config: data.backgroundConfig});
 
@@ -77,16 +81,20 @@ export default class Stage extends Phaser.Scene {
 
         //Bosse & Bullets
         this.load.image('boss1', '../../assets/enemy/pokemon/glumanda.png');
-        this.load.image('boss2', '../../assets/enemy/hellscape/boss_isaac.png');
-        this.load.image('bossBullet2', '../../assets/enemy/hellscape/bullet_isaac_boss.png');
+        this.load.image('boss2', '../../assets/enemy/marioland/boss_mario.png');
+        this.load.image('boss3', '../../assets/enemy/hellscape/boss_isaac.png');
+        this.load.image('bossBullet1', '../../assets/enemy/pokemon/bullet_pokemon_boss.png');
+        this.load.image('bossBullet2', '../../assets/enemy/marioland/bullet_mario_boss.png');
+        this.load.image('bossBullet3', '../../assets/enemy/hellscape/bullet_isaac_boss.png');
 
         //Objekte
         this.load.image('speed', '../../assets/objects/speed.png');
         this.load.image('unverwundbar', '../../assets/objects/unverwundbarkeit.png');
 
         //Basen
-        this.load.image('base1', '../../assets/basen/pokemon/base_pokescape.png');
-        this.load.image('base2', '../../assets/basen/isaac/base_isaac.png');
+        this.load.image('base1', '../../assets/basen/base_pokescape.png');
+        this.load.image('base2', '../../assets/basen/base_mario.png');
+        this.load.image('base3', '../../assets/basen/base_isaac.png');
         this.load.image('laser', '../../assets/objects/laser.png');
         this.load.image('lasershot', '../../assets/objects/lasershot.png');
 
@@ -213,22 +221,13 @@ export default class Stage extends Phaser.Scene {
         });
     }
 
-    bossSpawn(){
-        let __x = this.cameras.main.scrollX + 400;
-        let __y = 100;
-        this.bossSpawned = true;
-        this.boss = new Glurak({ scene: this, x: __x, y: __y }, 'boss2');
-        this.boss.body.setSize(114, 80);
-        this.enemyPool.push(this.boss);
-    }
-
     baseSpawn(min, max){
         for(let i = 0; i < 10; i++) {
             let offset = i * (max-min)/10;
             let randomX = Phaser.Math.Between(min+offset+5, min+offset + (max-min)/10-5);
             let randomY = Phaser.Math.Between(10,190);
 
-            let base1 = new Base({scene: this, x: randomX, y: randomY}, 'base2');
+            let base1 = new Base({scene: this, x: randomX, y: randomY}, this.baseImage);
             this.basePool.push(base1);
         }
     }
@@ -331,7 +330,7 @@ export default class Stage extends Phaser.Scene {
                 base.destroy();
             }
             this.factory.deactivate();
-            this.bossSpawn();
+            this.bossSpawn(this);
             this.state = 1;
             this.player.lockRight = true;
         }

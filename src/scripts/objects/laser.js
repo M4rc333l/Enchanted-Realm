@@ -6,14 +6,14 @@ export default class Laser extends Phaser.GameObjects.Sprite {
         this.context = config.context;
         this.player = config.player;
 
-        this.castLength = 150;
+        this.castLength = 300;
         this.actualLength = 0;
 
-        this.scaleX = 200
+        this.scaleX = 300
         this.ticker = 0;
 
         this.laserImage = new Phaser.GameObjects.Sprite(config.context, 100, 100, 'laser');
-        this.laserImage.scaleX = 200;
+        this.laserImage.scaleX = 300;
         
         this.context.add.existing(this.laserImage);
 
@@ -69,7 +69,7 @@ export default class Laser extends Phaser.GameObjects.Sprite {
 
         this.laserImage.setPosition(this.player.x, this.player.y);
         this.laserImage.setOrigin(this.player.flipX == false ? 1 : 0, 0.5)
-        this.laserImage.scaleX = 200;
+        this.laserImage.scaleX = 300;
 
         let nearest = this.getNearest();
         if(nearest[0] != 0) {

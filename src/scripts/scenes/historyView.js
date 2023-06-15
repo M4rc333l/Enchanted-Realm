@@ -13,6 +13,8 @@ export default class HistoryView extends Phaser.Scene {
     preload(){
     }
     create() {
+        
+        this.add.rectangle(0,0,320,224,0x000000,0.5).setOrigin(0);
        // this.add.rectangle(0,0,320,224,0x000000,0.5).setOrigin(0);
         this.username = '';
         this.highscore = null;
@@ -27,9 +29,9 @@ export default class HistoryView extends Phaser.Scene {
             .on(Phaser.Input.Events.POINTER_DOWN, () => {
                 this.scene.start('Menu')
             });
-        this.infoText = this.add.text(100, 50, ``,
-            { fontFamily:'Pixelart', fontSize: '28px', color: 'white', stroke: 'black', strokeThickness: 5 })
-            .setOrigin(0.5,0);
+        this.infoText = this.add.text(20, 50, ``,
+            { fontFamily:'Pixelart', fontSize: '26px', color: 'white', stroke: 'black', strokeThickness: 5 })
+            .setOrigin(0,0);
         request("/history","GET").then((result)=>{
             if(result.status == 200) {
                 this.score1 = result.body.score1;
@@ -37,7 +39,7 @@ export default class HistoryView extends Phaser.Scene {
                 this.score3 = result.body.score3;
                 this.score4 = result.body.score4;
                 this.score5 = result.body.score5;
-                this.infoText.text = `Game 1: ${this.score1}\nGame 2: ${this.score2}\nGame 3: ${this.score3}\nGame 4: ${this.score4}\nGame 5: ${this.score5}`;
+                this.infoText.text = `Game 1: ${this.score1} Punkte\nGame 2: ${this.score2} Punkte\nGame 3: ${this.score3} Punkte\nGame 4: ${this.score4} Punkte\nGame 5: ${this.score5} Punkte`;
                 statistic.initialized = true;
             }})
     }
