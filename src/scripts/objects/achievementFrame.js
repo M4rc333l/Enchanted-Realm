@@ -1,5 +1,3 @@
-
-
 export default class AchievementFrame {
     constructor(context,x,y,type, amount, title, description, enabled) {
         this.context = context;
@@ -25,8 +23,8 @@ export default class AchievementFrame {
         }
 
         if(this.enabled == false) {
-            imageTint= 0x444444; 
-            textTint= 0x888888; 
+            imageTint= 0x444444;
+            textTint= 0x888888;
             descriptionTint = 0xBBBBBB;
         }
 
@@ -45,7 +43,7 @@ export default class AchievementFrame {
         this.textTitle.setTint(descriptionTint);
 
         this.descriptionTitle = this.context.add.text(this.x+40, this.y+16, this.description, {fontSize:'12px'})
-        .setOrigin(0,0);
+            .setOrigin(0,0);
         this.descriptionTitle.setTint(descriptionTint);
 
     }

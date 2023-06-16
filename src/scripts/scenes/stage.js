@@ -1,14 +1,11 @@
 import 'phaser';
-import ParrallaxBackground from './parrallaxBackground';
 import Player from '../objects/player';
-import Enemy from "../objects/enemy";
 import SpeedItem from "../objects/items/speedItem";
 import LaserGun from "../objects/items/laserGun";
 import Base from "../objects/base/base";
 import Factory from "../objects/enemies/enemyfactory.js"
 import ProtectionItem from "@/scripts/objects/items/protectionItem";
 import stageConfigs from '../scenes/stageData.js';
-import BossBullet from "@/scripts/objects/bossBullet";
 import Statistic from '../objects/statistic';
 
 export default class Stage extends Phaser.Scene {
@@ -17,7 +14,6 @@ export default class Stage extends Phaser.Scene {
     }
     init (data)
     {
-
         this.cameras.main.fadeIn(1000,255,255,255);
         if(Object.keys(data).length === 0) {
             data = {};
@@ -43,8 +39,6 @@ export default class Stage extends Phaser.Scene {
 
         this.cameraOffset = 0
         this.aestheticOffset = 0;
-
-        this.defeatedEnemy = 0;
 
         this.states = {
             baseRemain: 0,
@@ -138,8 +132,6 @@ export default class Stage extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.player,false,1,0,0,0)
 
-        this.enemySpawnTick = 0;
-
         this.physics.add.overlap(this.player, this.enemyPool, () => {
             this.player.enemyCollision();
         })
@@ -157,7 +149,7 @@ export default class Stage extends Phaser.Scene {
                 this.itemSpawn();
             }
         });
-        this.registry.events.on('gameOver', (distance) => {
+        this.registry.events.on('gameOver', () => {
             this.sound.play("GameOver");
             this.registry.events.removeAllListeners();
             this.backgroundMusic.stop();
@@ -336,7 +328,6 @@ export default class Stage extends Phaser.Scene {
 
     addPoints(points) {
         this.points += points;
-        this.defeatedEnemy += 1;
         Statistic.localdata.score += points;
         this.registry.events.emit('onPointsChanged', this.points);
     }

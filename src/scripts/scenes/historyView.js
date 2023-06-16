@@ -1,5 +1,3 @@
-import AchievementFrame from "../objects/achievementFrame";
-import Statistics from "../objects/statistic.js";
 import request from "../request.js"
 import statistic from "@/scripts/objects/statistic";
 
@@ -13,9 +11,7 @@ export default class HistoryView extends Phaser.Scene {
     preload(){
     }
     create() {
-        
         this.add.rectangle(0,0,320,224,0x000000,0.5).setOrigin(0);
-       // this.add.rectangle(0,0,320,224,0x000000,0.5).setOrigin(0);
         this.username = '';
         this.highscore = null;
         this.defeatedEnemies = 0;
@@ -24,8 +20,8 @@ export default class HistoryView extends Phaser.Scene {
             { fontFamily:'Pixelart', fontSize: '28px', color: 'white', stroke: 'black', strokeThickness: 5 })
             .setOrigin(0.5,0)
             .setInteractive()
-            .on('pointerover', (e) => this.buttonHover(this.menuText,'blue'))
-            .on('pointerout', (e) => this.buttonHover(this.menuText,'white'))
+            .on('pointerover', () => this.buttonHover(this.menuText,'blue'))
+            .on('pointerout', () => this.buttonHover(this.menuText,'white'))
             .on(Phaser.Input.Events.POINTER_DOWN, () => {
                 this.scene.start('Menu')
             });

@@ -1,4 +1,3 @@
-import ParrallaxBackground from "./parrallaxBackground";
 import stageConfigs from "./stageData.js";
 import request from "../request.js"
 import statistic from "../objects/statistic";
@@ -21,7 +20,6 @@ export default class Menu extends Phaser.Scene {
         statistic.getAchievements().then(()=>{
             console.log(statistic.getSucceededAchievements());
         });
-
 
         this.username = '';
         this.highscore = null;

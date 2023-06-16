@@ -10,9 +10,7 @@ export default class BossBullet extends Enemy {
     }
 
     moveAlgorithm(time, delta) {
-        //TODO: Bewegung auf x-Achse
         this._x -= 5;
-        //TODO: Wenn weg, dann gar keine Bewegung mehr -> für Aktualisierug der Position
         this.setPosition(this._x, this._y);
     }
 }

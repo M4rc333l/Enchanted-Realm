@@ -6,9 +6,6 @@ export default class Laser extends Phaser.GameObjects.Sprite {
         this.context = config.context;
         this.player = config.player;
 
-        this.castLength = 300;
-        this.actualLength = 0;
-
         this.scaleX = 300
         this.ticker = 0;
 
@@ -76,12 +73,6 @@ export default class Laser extends Phaser.GameObjects.Sprite {
             this.laserImage.scaleX = nearest[0];
             nearest[1].takeDamage(15);
         }
-
         this.collidingBodies = [];
     }
-
-    getLength() {
-
-    }
-
 }

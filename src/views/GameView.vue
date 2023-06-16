@@ -3,8 +3,6 @@
     <img id="navigateback-icon" v-on:click="navigateBack()" src="../assets/misc/navigateback-icon.png">
     <canvas id="phaser-game" ref="phaser_game" style="image-rendering:pixelated;" width="320" height="224"></canvas>
 </template>
-
-
 <script>
 
 import config from '../scripts/game.js';
@@ -39,12 +37,10 @@ export default {
         elem.webkitRequestFullscreen();
       } else if (elem.msRequestFullscreen) { 
         elem.msRequestFullscreen();
-      }    
-      
+      }
     },
   
     closeFullscreen:function() {
-      
       if (document.exitFullscreen) {
         document.exitFullscreen();
       } else if (document.mozCancelFullScreen) { 
@@ -54,7 +50,6 @@ export default {
       } else if (document.msExitFullscreen) { 
         document.msExitFullscreen();
       }
-    
     },
 
     switchFullscreen() {
@@ -74,11 +69,6 @@ export default {
     }
   }
 }
-
-
-
 </script>
-
-
 <style>
 </style>

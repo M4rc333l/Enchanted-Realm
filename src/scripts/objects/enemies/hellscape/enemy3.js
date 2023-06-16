@@ -10,14 +10,10 @@ export default class Enemy3 extends Enemy {
     }
 
     moveAlgorithm(time, delta) {
-
-        //TODO: Gegner spiegeln
         this.flipX = this.x < this.player.x;
-        //TODO: Bewegung auf x- & y-Achse
         this._x = this.randomX;
         this._x += 0.3;
         this._y -= 0.8;
-        //TODO: Wenn weg, dann gar keine Bewegung mehr -> für Aktualisierug der Position
         this.setPosition(this._x, this._y);
     }
 }

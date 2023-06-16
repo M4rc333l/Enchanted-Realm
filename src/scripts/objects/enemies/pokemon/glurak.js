@@ -1,7 +1,6 @@
 import Enemy from '../../enemy.js';
 import BossBullet from "@/scripts/objects/bossBullet";
 
-
 export default class Glurak extends Enemy {
 
     constructor(config, image, bulletImage) {

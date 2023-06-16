@@ -36,10 +36,8 @@ if(typeof document.createStyleSheet === 'undefined') {
         function addRule(selectorText, cssText, index) {
             if(typeof index === 'undefined')
                 index = this.cssRules.length;
-
             this.insertRule(selectorText + ' {' + cssText + '}', index);
         }
-
         return createStyleSheet;
     })();
 }

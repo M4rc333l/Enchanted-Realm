@@ -1,4 +1,3 @@
-
 export default class Gui extends Phaser.Scene {
     constructor() {
         super({key: 'Gui'});

@@ -1,4 +1,3 @@
-
 export default class end extends Phaser.Scene {
     constructor() {
         super({key: 'End'});

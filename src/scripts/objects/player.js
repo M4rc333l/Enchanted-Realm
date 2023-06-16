@@ -13,10 +13,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.margin = 8;
         this.shootMaxTick = 40;
         this.shootTick = 0;
-        this.playerVelocity = new Phaser.Math.Vector2();
         this.depth = 1;
         this.life = config.life == undefined ? 3 : config.life;
-        this.maxLife = 3;
         this._x = config.x;
         this._y = config.y;
         this._playerVelocity = new Phaser.Math.Vector2();
@@ -25,9 +23,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.distance = 0;
         this.prevPosition = 0;
         this.create();
-
         this.hasLaser = false;
-
         this.laser = new Laser({context:config.scene, player:this});
         this.context.physics.add.existing(this.laser);
         this.laser.deactivate();
@@ -130,7 +126,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
         return this.distance;
     }
     shoot(horizontalOffset = 0) {
-        //this.scene.registry.events.emit('shoots');
         this.context.sound.play("shoots");
         let bullet = new Bullet({scene:this.context, x:8, y:3, name:'bullet_normal'});
         bullet.x = this.x;

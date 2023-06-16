@@ -23,8 +23,8 @@ export default class AchievementsView extends Phaser.Scene {
         this.leftPageButton = this.add.text(130, 0, "<",
         { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
         .setInteractive().setOrigin(0,0)
-        .on('pointerover', (e) => this.buttonHover(this.leftPageButton,'blue'))
-        .on('pointerout', (e) => this.buttonHover(this.leftPageButton,'white'))
+        .on('pointerover', () => this.buttonHover(this.leftPageButton,'blue'))
+        .on('pointerout', () => this.buttonHover(this.leftPageButton,'white'))
         .on(Phaser.Input.Events.POINTER_DOWN, () => {
             this.page--;
             if(this.page < 0) {
@@ -36,8 +36,8 @@ export default class AchievementsView extends Phaser.Scene {
         this.rightPageButton = this.add.text(290, 0, ">",
         { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
         .setInteractive().setOrigin(0,0)
-        .on('pointerover', (e) => this.buttonHover(this.rightPageButton,'blue'))
-        .on('pointerout', (e) => this.buttonHover(this.rightPageButton,'white'))
+        .on('pointerover', () => this.buttonHover(this.rightPageButton,'blue'))
+        .on('pointerout', () => this.buttonHover(this.rightPageButton,'white'))
         .on(Phaser.Input.Events.POINTER_DOWN, () => {
             this.page++;
             if(this.page > this.maxPage) {
@@ -53,15 +53,12 @@ export default class AchievementsView extends Phaser.Scene {
         { fontFamily:'Pixelart', fontSize: '28px', color: 'white', stroke: 'black', strokeThickness: 5 })
         .setOrigin(0.5,0)        
         .setInteractive()
-        .on('pointerover', (e) => this.buttonHover(this.menuText,'blue'))
-        .on('pointerout', (e) => this.buttonHover(this.menuText,'white'))        
+        .on('pointerover', () => this.buttonHover(this.menuText,'blue'))
+        .on('pointerout', () => this.buttonHover(this.menuText,'white'))
         .on(Phaser.Input.Events.POINTER_DOWN, () => {
             this.scene.start('Menu')
-        });;
-
-
+        });
         this.selectPage(0);
-
     }
 
     selectPage(page) {

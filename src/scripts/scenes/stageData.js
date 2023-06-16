@@ -30,7 +30,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             },
             {
@@ -52,7 +52,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             },
             {
@@ -74,7 +74,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             }
         ],
@@ -114,7 +114,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             },
             {
@@ -136,7 +136,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             },
             {
@@ -196,7 +196,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             },
             {
@@ -218,7 +218,7 @@ export default {
                     timer.delay = Phaser.Math.Between(2000,10000);
                     state.spawnSite = Phaser.Math.Between(0,1);
                     state.randomY = Phaser.Math.Between(10,200);
-                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;;
+                    state.spawnX = state.spawnSite == 0 ? context.cameras.main.scrollX - 500 : context.cameras.main.scrollX + 820;
                 }
             },
             {

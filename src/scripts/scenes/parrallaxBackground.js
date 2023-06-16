@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import Base from '../objects/base/base';
 'use strict';
 
 export default class ParrallaxBackground extends Phaser.Scene {
@@ -24,21 +23,15 @@ export default class ParrallaxBackground extends Phaser.Scene {
         this.scene.moveDown();
     }
 
-    setScales(scales) {
-        this.scales = scales;
-    }
-
     preload()
     {
         let basePath = `../../assets/stages/${this.name}/`;
-
         for (const name of this.imageNames) {
             this.load.image(name, `${basePath}${name}.png`);
         }
     }
     create() {
         this.backgrounds = [];
-
         for (const name of this.imageNames) {
             this.backgrounds.push([]);
             for(let i = 0; i < 4; i++) {
@@ -47,14 +40,8 @@ export default class ParrallaxBackground extends Phaser.Scene {
                 part.depth = 10;
                 this.backgrounds[this.backgrounds.length-1].push(part);
             }
-
         }
-
-        this._position = 1200;
         this.position = 1200;
-        this.depth = 0;
-
-        this.lpx = 0;
     }
 
     updatePosition(pos) {
@@ -68,19 +55,11 @@ export default class ParrallaxBackground extends Phaser.Scene {
         }
 
         for (let i = 0; i < this.imageNames.length; i++) {
-            for(let j = 0; j < 4; j++) {            
-                //this.backgrounds[i].x = (Math.floor(position / this.bgWidth) * this.bgWidth + (-this.scales[i] * position * this.depth) % this.bgWidth) - this.bgWidth;
-            
+            for(let j = 0; j < 4; j++) {
                 let segment = Math.floor(this.position * (this.scales[i]) / this.bgWidth) - 2;
-    
                 this.backgrounds[i][j].x = ((segment*this.bgWidth) -(this.position * this.scales[i])) + j * this.bgWidth
                 this.backgrounds[i][j].x = Math.floor(this.backgrounds[i][j].x);
             }
-        }  
-        
-
-    }
-    translate(x) {
-
+        }
     }
 }
