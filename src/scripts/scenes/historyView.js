@@ -34,12 +34,17 @@ export default class HistoryView extends Phaser.Scene {
             .setOrigin(0,0);
         request("/history","GET").then((result)=>{
             if(result.status == 200) {
-                this.score1 = result.body.score1;
-                this.score2 = result.body.score2;
-                this.score3 = result.body.score3;
-                this.score4 = result.body.score4;
-                this.score5 = result.body.score5;
-                this.infoText.text = `Game 1: ${this.score1} Punkte\nGame 2: ${this.score2} Punkte\nGame 3: ${this.score3} Punkte\nGame 4: ${this.score4} Punkte\nGame 5: ${this.score5} Punkte`;
+                this.score1 = result.body.score1 + " Points";
+                this.score2 = result.body.score2 + " Points";
+                this.score3 = result.body.score3 + " Points";
+                this.score4 = result.body.score4 + " Points";
+                this.score5 = result.body.score5 + " Points";
+                if(this.score1 === "-1 Points") this.score1 = "Not played";
+                if(this.score2 === "-1 Points") this.score2 = "Not played";
+                if(this.score3 === "-1 Points") this.score3 = "Not played";
+                if(this.score4 === "-1 Points") this.score4 = "Not played";
+                if(this.score5 === "-1 Points") this.score5 = "Not played";
+                this.infoText.text = `Game 1: ${this.score1} \nGame 2: ${this.score2} \nGame 3: ${this.score3} \nGame 4: ${this.score4} \nGame 5: ${this.score5}`;
                 statistic.initialized = true;
             }})
     }
