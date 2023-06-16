@@ -17,7 +17,7 @@
                             <label for="inputPasswordRepeat" class="form-label">Passwort wiederholen</label>
                             <input type="password" class="form-control border border-primary" id="inputPasswordRepeat" v-model="this.passwordRepeat">
                         </div>
-                        <p class="small"><router-link to="game" class="text-primary">Als Gast spielen</router-link></p>
+                        <p class="small"><router-link to="game" class="text-primary" v-on:click="logout()">Als Gast spielen</router-link></p>
                         <div class="d-grid">
                             <button class="btn btn-primary" v-on:click="register()">Register</button>
                         </div>
@@ -43,23 +43,21 @@ export default {
     },
     methods: {
         async register() {
-
           await request('/logout', 'GET');
-
             if(this.password != this.passwordRepeat) {
                 this.message = 'Die Passwörter stimmen nicht überein.';
                 return;
             }
-
             let result = await request('/register', 'POST', {username:this.username, password:this.password});
             if(result.status != 200) {
                 this.message = result.body.msg;
             } else {
                 this.$router.push("/game");
             }
-
-            
-        }
+        },
+      async logout() {
+        await request('/logout', 'GET');
+      }
     }
 }
 </script>

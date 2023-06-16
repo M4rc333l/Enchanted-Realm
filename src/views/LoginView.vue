@@ -13,7 +13,7 @@
                         <label for="inputPassword" class="form-label">Passwort</label>
                         <input type="password" class="form-control border border-primary" id="inputPassword" v-model="this.password">
                     </div>
-                        <p class="small"><router-link to="game" class="text-primary">Als Gast spielen</router-link></p>
+                        <p class="small"><router-link to="game" class="text-primary" v-on:click="logout()">Als Gast spielen</router-link></p>
                     <div class="d-grid">
                         <button class="btn btn-primary" v-on:click="login()">Login</button>
                     </div>
@@ -50,6 +50,9 @@ export default {
                 this.$router.push("/game");
             }
         },
+      async logout() {
+        await request('/logout', 'GET');
+      }
     }
 }
 </script>
