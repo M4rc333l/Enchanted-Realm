@@ -159,7 +159,6 @@ export default class Stage extends Phaser.Scene {
                 this.itemSpawn();
             }
         });
-
         this.registry.events.on('gameOver', (distance) => {
             this.sound.play("GameOver");
             this.registry.events.removeAllListeners();
@@ -168,6 +167,7 @@ export default class Stage extends Phaser.Scene {
             this.scene.stop('Gui'); 
             this.scene.launch('End');
             Statistic.push();
+
         });
 
         this.factory.create();
@@ -267,21 +267,25 @@ export default class Stage extends Phaser.Scene {
                 if(progress == 1) {
                     this.backgroundMusic.stop();
                     this.laserSound.stop();
-                    this.scene.stop(); 
+                    this.scene.stop();
 
                     if(stageConfigs.levels().length == this.stageIndex+1) {
+                        console.log(config.points);
+                        Statistic.push();
                         this.registry.events.removeAllListeners();
                         this.scene.stop("Background");
                         this.scene.stop("Gui");
                         this.scene.start("Menu");
                     } else {
+                        this.registry.events.removeAllListeners();
                         let config = stageConfigs.levels()[this.stageIndex+1];
                         config.playerLifes = this.player.life;
                         config.points = this.points;
                         config.stageIndex = this.stageIndex + 1;
                         this.scene.restart(config);
                     }
-                    Statistic.push();
+
+
                 }
             });
         }
