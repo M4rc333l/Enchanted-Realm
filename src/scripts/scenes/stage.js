@@ -17,7 +17,7 @@ export default class Stage extends Phaser.Scene {
     }
     init (data)
     {
-        
+
         this.cameras.main.fadeIn(1000,255,255,255);
         if(Object.keys(data).length === 0) {
             data = {};
@@ -37,10 +37,10 @@ export default class Stage extends Phaser.Scene {
 
         this.bg = this.scene.get('Background');
         this.bg.scene.moveDown();
-        
+
         this.bossSpawned = false;
         this.boss = null;
-        
+
         this.cameraOffset = 0
         this.aestheticOffset = 0;
 
@@ -120,7 +120,6 @@ export default class Stage extends Phaser.Scene {
         this.backgroundMusic.play();
         this.backgroundMusic.volume = 0.5;
 
-    
         this.registry.events.on('hit', () => {
             hit.play();
         });
@@ -134,7 +133,7 @@ export default class Stage extends Phaser.Scene {
         this.addPushListener(this.enemyPool, ()=>{});
         this.basePool = [];
         this.addPushListener(this.basePool, ()=>{})
-        
+
         this.player = new Player({scene:this, x:0, y:110, name:'player', life: this.playerLifes});
 
         this.cameras.main.startFollow(this.player,false,1,0,0,0)
@@ -152,7 +151,6 @@ export default class Stage extends Phaser.Scene {
             this.sound.play("pickupItem");
         })
 
-
         this.registry.events.on('enemyDestroyed', () => {
             //WK für das Spawnen eines Items
             if(!this.itemDelay && Math.random() < 0.25) {
@@ -164,10 +162,9 @@ export default class Stage extends Phaser.Scene {
             this.registry.events.removeAllListeners();
             this.backgroundMusic.stop();
             this.laserSound.stop();
-            this.scene.stop('Gui'); 
+            this.scene.stop('Gui');
             this.scene.launch('End');
             Statistic.push();
-
         });
 
         this.factory.create();
@@ -205,11 +202,9 @@ export default class Stage extends Phaser.Scene {
             sItem = new SpeedItem({scene:this, x:this.player.x+50, y:50}, this.player, 'speed');
         }
         else if(randomItem>=0.4 && randomItem<0.8){
-            //anderes Item
             sItem = new LaserGun({scene:this, x:this.player.x+50, y:50}, this.player, 'item');
         }
         else if(randomItem>=0.8 && randomItem<=1){
-            //anderes Item
             sItem = new ProtectionItem({scene:this, x:this.player.x+50, y:50}, this.player, 'unverwundbar');
         }
         this.itemPool.push(sItem);
@@ -244,7 +239,7 @@ export default class Stage extends Phaser.Scene {
         if(this.state == this.states.boss) {
             this.aestheticOffset += delta * 0.07;
         }
-        
+
         for(const obj of this.bulletPool) {
             obj.update(time, delta);
         }
@@ -263,33 +258,29 @@ export default class Stage extends Phaser.Scene {
     initEnd() {
         if(!this.endedAnim) {
             this.endedAnim = true;
-            this.cameras.main.fadeOut(1000,255,255,255,(cam, progress)=>{ 
+            this.cameras.main.fadeOut(1000,255,255,255,(cam, progress)=>{
                 if(progress == 1) {
                     this.backgroundMusic.stop();
                     this.laserSound.stop();
                     this.scene.stop();
-
                     if(stageConfigs.levels().length == this.stageIndex+1) {
-                        console.log(config.points);
                         Statistic.push();
                         this.registry.events.removeAllListeners();
                         this.scene.stop("Background");
                         this.scene.stop("Gui");
                         this.scene.start("Menu");
                     } else {
-                        this.registry.events.removeAllListeners();
+                        this.registry.events.removeListener("gameOver");
                         let config = stageConfigs.levels()[this.stageIndex+1];
                         config.playerLifes = this.player.life;
                         config.points = this.points;
                         config.stageIndex = this.stageIndex + 1;
                         this.scene.restart(config);
                     }
-
-
                 }
             });
         }
-            
+
     }
 
     addPushListener(arr, callback) {
@@ -321,7 +312,7 @@ export default class Stage extends Phaser.Scene {
 
     removeBase(base) {
         base.destroy();
-        
+
         let activeCount = 0;
         for(let base of this.basePool) {
             if(base.active == true) {
@@ -349,5 +340,4 @@ export default class Stage extends Phaser.Scene {
         Statistic.localdata.score += points;
         this.registry.events.emit('onPointsChanged', this.points);
     }
-
 }
