@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     async deleteUser() {
+      await request('/logout', 'GET');
       let result = await request('/deleteUser', 'POST', {username: this.username, password: this.password});
       if (result.status != 200) {
         this.message = result.body.msg;
