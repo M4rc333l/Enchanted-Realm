@@ -157,6 +157,7 @@ export default class Stage extends Phaser.Scene {
             this.scene.stop('Gui');
             this.scene.launch('End');
             Statistic.push();
+            this.scene.stop('Stage');
         });
 
         this.factory.create();
