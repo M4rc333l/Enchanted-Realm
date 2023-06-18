@@ -27,6 +27,15 @@ export default class Menu extends Phaser.Scene {
         
         this.info = this.add.text(this.cx,this.cy,'').setOrigin(0.5).setAlign("center").setColor('white');
 
+
+
+        this.globalHighscore = this.add.text(this.cx, this.cy + 100, "Leaderboard",
+            { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
+            .setInteractive().setOrigin(0.5)
+            .on('pointerover', () => this.globalHighscoreButtonHover('blue'))
+            .on('pointerout', () => this.globalHighscoreButtonHover('white'));
+
+
         this.startLogo = this.add.text(this.cx, this.cy + 10, "Start",
             { fontFamily:'Pixelart', fontSize: '30px', color: 'white', stroke: 'black', strokeThickness: 5 })
             .setInteractive().setOrigin(0.5)
@@ -77,8 +86,19 @@ export default class Menu extends Phaser.Scene {
             });
         });
 
+        this.globalHighscore.on(Phaser.Input.Events.POINTER_DOWN, () => {
+            this.add.tween({
+                targets: this.globalHighscore,
+                y: +400,
+                onComplete: () => {
+                    this.scene.start('globalHighscore')
+                }
+            });
+        });
+
             this.achievementsLogo.visible = false;
             this.history.visible = false;
+            this.globalHighscore.visible = false;
 
         request("/highscore","GET").then((result)=>{
                     if(result.status == 200) {
@@ -88,6 +108,7 @@ export default class Menu extends Phaser.Scene {
                         this.info.text = `Hallo, ${this.username}!\nHighscore: ${this.highscore}\nEliminierte Gegner: ${this.defeatedEnemies}`;
                         this.achievementsLogo.visible = true;
                         this.history.visible = true;
+                        this.globalHighscore.visible = true;
                         statistic.initialized = true;
                         statistic.username = this.username;
                     } else {
@@ -103,6 +124,9 @@ export default class Menu extends Phaser.Scene {
     }
     historyButtonHover(style){
         this.history.setStyle({ fill: style});
+    }
+    globalHighscoreButtonHover(style){
+        this.globalHighscore.setStyle({ fill: style});
     }
     update() {
         this.ticker+=0.001;

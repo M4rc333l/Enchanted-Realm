@@ -6,6 +6,7 @@ import ParrallaxBackground from './scenes/parrallaxBackground.js'
 import End from './scenes/end.js'
 import AchievementsView from './scenes/achievementsView.js';
 import HistoryView from './scenes/historyView.js';
+import globalHighscore from './scenes/globalHighscore.js';
 
 Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
@@ -35,7 +36,8 @@ var config = {
         ParrallaxBackground,
         End,
         AchievementsView,
-        HistoryView
+        HistoryView,
+        globalHighscore
     ]
 };
 

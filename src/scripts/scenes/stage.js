@@ -253,6 +253,7 @@ export default class Stage extends Phaser.Scene {
             this.endedAnim = true;
             this.cameras.main.fadeOut(1000,255,255,255,(cam, progress)=>{
                 if(progress == 1) {
+                    this.addPoints(90);
                     this.backgroundMusic.stop();
                     this.laserSound.stop();
                     this.scene.stop();
